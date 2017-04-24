@@ -7,7 +7,9 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import model.UserDto;
-import services.UserService;
+import services.login.LoginService;
+import utils.Constants;
+import utils.UserStateEnum;
 
 @ManagedBean(name = "userLogin")
 @ViewScoped
@@ -17,7 +19,7 @@ public class UserLoginBean {
 	private String password;
 
 	@EJB
-	UserService usrService;
+	LoginService userService;
 
 	public String getUsername() {
 		return username;
@@ -39,20 +41,26 @@ public class UserLoginBean {
 
 		FacesMessage message = null;
 
-		UserDto usrDto = usrService.getUser(username);
+		UserDto userDto = userService.getUser(username);
+		
+		boolean passwordMatch = password.equals(userDto.getPassword());
+		boolean usernameMatch = username.equals(userDto.getUsername());
+		boolean isEnabled = userDto.getState().equals(UserStateEnum.ENABLED.getState());
+		
 
-		if (password.equals(usrDto.getPassword()) && username.equals(usrDto.getUsername())) {
+		if (!userDto.equals(null) && passwordMatch && usernameMatch && isEnabled) {
+
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.WELCOME, username);
+			FacesContext.getCurrentInstance().addMessage(null, message);
 			
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
-			 return "success.xhtml?faces-redirect=true";
-			
+			return "success.xhtml?faces-redirect=true";
+
 		} else {
-			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.LOGIN_ERROR, Constants.INVALID_CREDENTIALS);
 
 			FacesContext.getCurrentInstance().addMessage(null, message);
-			 return null;
+			return null;
 		}
 	}
-	
 
 }

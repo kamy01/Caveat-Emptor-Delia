@@ -1,39 +1,26 @@
 package model;
 
-import java.io.Serializable;
+public class UserDto {
 
-public class UserDto implements Serializable {
-
-	private static final long serialVersionUID = 576858132725677856L;
-
-	public UserDto(long userId, String username, String password, String firstName, String lastName,
-			String emailAdress) {
-		super();
-		this.userId = userId;
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.emailAdress = emailAdress;
-	}
-
-	public UserDto() {
-		// TODO Auto-generated constructor stub
-	}
-
-	private long userId;
+	private long id;
 	private String username;
 	private String password;
 	private String firstName;
 	private String lastName;
-	private String emailAdress;
+	private String email;
+	private AddressDto address;
+	private String state;
 
-	public long getUserId() {
-		return userId;
+	public UserDto() {
+		super();
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long userId) {
+		this.id = userId;
 	}
 
 	public String getUsername() {
@@ -68,25 +55,28 @@ public class UserDto implements Serializable {
 		this.lastName = lastName;
 	}
 
-	public String getEmailAdress() {
-		return emailAdress;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setEmailAdress(String emailAdress) {
-		this.emailAdress = emailAdress;
+	public void setEmail(String emailAdress) {
+		this.email = emailAdress;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((emailAdress == null) ? 0 : emailAdress.hashCode());
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + (int) (userId ^ (userId >>> 32));
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
-		return result;
+	public AddressDto getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressDto address) {
+		this.address = address;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	@Override
@@ -98,10 +88,15 @@ public class UserDto implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserDto other = (UserDto) obj;
-		if (emailAdress == null) {
-			if (other.emailAdress != null)
+		if (address == null) {
+			if (other.address != null)
 				return false;
-		} else if (!emailAdress.equals(other.emailAdress))
+		} else if (!address.equals(other.address))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
 			return false;
 		if (firstName == null) {
 			if (other.firstName != null)
@@ -118,7 +113,7 @@ public class UserDto implements Serializable {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (userId != other.userId)
+		if (id != other.id)
 			return false;
 		if (username == null) {
 			if (other.username != null)

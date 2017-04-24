@@ -1,13 +1,21 @@
 package com.biddingapp.beans;
 
+import java.util.Date;
+import java.util.UUID;
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import model.AddressDto;
+import model.RegistrationDto;
 import model.UserDto;
-import services.UserService;
+import services.register.RegisterService;
+import services.register.email.ConfirmationEmail;
+import utils.Constants;
+import utils.UserStateEnum;
 
 @ManagedBean(name = "userRegister")
 @ViewScoped
@@ -21,9 +29,11 @@ public class UserRegistrationBean {
 	private String city;
 	private String street;
 	private String zipcode;
+	private boolean usernameValid = true;
+	private boolean emailValid = true;
 
 	@EJB
-	UserService usrService;
+	RegisterService registerService;
 
 	public String getUsername() {
 		return username;
@@ -89,31 +99,91 @@ public class UserRegistrationBean {
 		this.zipcode = zipcode;
 	}
 
-	public UserService getUsrService() {
-		return usrService;
-	}
-
-	public void setUsrService(UserService usrService) {
-		this.usrService = usrService;
-	}
-	
 	public String register() {
 
 		FacesMessage message = null;
 
-		UserDto usrDto = usrService.getUser(username);
+		RegistrationDto registration = new RegistrationDto();
+		UserDto user = new UserDto();
+		AddressDto address = new AddressDto();
 
-		if (password.equals(usrDto.getPassword()) && username.equals(usrDto.getUsername())) {
+		address.setCity(city);
+		address.setStreetName(street);
+		address.setZipcode(zipcode);
+
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setEmail(email);
+		user.setState(UserStateEnum.PENDING.getState());
+		user.setAddress(address);
+
+		registration.setUser(user);
+		registration.setExpirationDate(new Date());
+		registration.setValidationCode(UUID.randomUUID().toString());
+
+		if (usernameValid && emailValid) {
 			
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
-			 return "success.xhtml?faces-redirect=true";
+			registerService.createNewUser(registration);
 			
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					Constants.CORRECT_REGISTER, username);
+			
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			return "success.xhtml?faces-redirect=true";
+
 		} else {
-			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.REGISTRATION_ERROR_TITLE,
+					Constants.REGISTRATION_ERROR);
 
 			FacesContext.getCurrentInstance().addMessage(null, message);
-			 return null;
+			return null;
 		}
 	}
-}
 
+	public void isEmailRegistered() {
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		if (registerService.checkExistingEmail(email)) {
+
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.REGISTRATION_ERROR_TITLE,
+					Constants.EMAIL_ALREADY_USED));
+
+			emailValid = false;
+		} else {
+			emailValid = true;
+		}
+	}
+
+	public void isUsernameRegistered() {
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		if (registerService.checkExistingUser(username)) {
+
+			context.addMessage(null,
+
+					new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.REGISTRATION_ERROR_TITLE, Constants.USERNAME_ALREADY_USED));
+			usernameValid = false;
+
+		} else {
+			usernameValid = true;
+		}
+	}
+
+	public boolean isUsernameValid() {
+		return usernameValid;
+	}
+
+	public void setUsernameValid(boolean usernameValid) {
+		this.usernameValid = usernameValid;
+	}
+
+	public boolean isEmailValid() {
+		return emailValid;
+	}
+
+	public void setEmailValid(boolean emailValid) {
+		this.emailValid = emailValid;
+	}
+}

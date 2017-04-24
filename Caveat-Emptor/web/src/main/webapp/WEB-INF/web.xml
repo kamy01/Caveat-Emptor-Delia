@@ -4,7 +4,7 @@
 	version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
 	<display-name>Caveat Emptor</display-name>
 	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>loginPage.xhtml</welcome-file>
 	</welcome-file-list>
 	<session-config>
 		<session-timeout>30</session-timeout>
