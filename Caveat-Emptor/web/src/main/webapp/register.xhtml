@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href='resources/css/style.css' rel='stylesheet' type='text/css' />
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu:500'
+		rel='stylesheet' type='text/css' />
+	<link rel='stylesheet prefetch'
+		href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css' />
+
+	<link rel="stylesheet" href="css/style.css" />
+
+	<title>Login</title>
+</h:head>
+<h:body>
+
+	<div class="register">
+		<h:form id="registerForm">
+
+			<p:growl id="growl" sticky="false" showDetail="true" life="3000" />
+
+			<div class="register-header">
+
+				<h2>Register</h2>
+			</div>
+			<div class="register-form">
+
+				<h3>User information:</h3>
+
+				<p:inputText id="firstname" type="text" placeholder="Firstname"
+					value="#{userRegister.firstName}" required="true" />
+				<p:inputText id="lastname" type="text"
+					value="#{userRegister.lastName}" required="true"
+					placeholder="Lastname" />
+
+				<p:inputText id="email" value="#{userRegister.email}" type="text"
+					required="true" placeholder="Email"
+					validatorMessage="Invalid email format">
+					<f:validateRegex
+						pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					<p:ajax event="blur" update="growl"
+						listener="#{userRegister.isEmailRegistered}" />
+
+				</p:inputText>
+
+				<p:inputText id="username" type="text"
+					value="#{userRegister.username}" required="true"
+					placeholder="Username">
+					<p:ajax event="blur" update="growl"
+						listener="#{userRegister.isUsernameRegistered}" />
+				</p:inputText>
+
+				<p:password type="password" id="password1" feedback="true"
+					value="#{userRegister.password}" required="true"
+					requiredMessage="Password field must not be empty"
+					validatorMessage="The passwords must match!" placeholder="Password"
+					match="password2">
+
+				</p:password>
+
+				<p:password type="password" id="password2" required="true"
+					value="#{userRegister.password}" placeholder="Retype password"
+					validatorMessage="Password is too short!">
+					<f:validateLength minimum="4" />
+					<p:clientValidator />
+				</p:password>
+				<br></br>
+
+				<h3>Shipping details:</h3>
+
+				<p:inputText id="city" value="#{userRegister.city}" type="text"
+					required="true" placeholder="City" />
+				<p:inputText id="street" value="#{userRegister.street}" type="text"
+					required="true" placeholder="Street" />
+				<p:inputText id="zipcode" value="#{userRegister.zipcode}"
+					type="text" required="true" placeholder="Zipcode" />
+
+				<br /> <br />
+
+				<p:commandButton action="#{userRegister.register}" value="Sign Up"
+					update="growl" />
+				<p:commandButton value="Reset" type="reset" />
+
+				<br></br>
+
+				<h:outputLink value="loginPage.xhtml" class="sign-up">Login!</h:outputLink>
+				<br />
+			</div>
+		</h:form>
+	</div>
+	<script
+		src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+	<script
+		src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+
+	<script src="js/index.js"></script>
+</h:body>
+</html>
