@@ -5,11 +5,10 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-@NamedQueries({ 
+@NamedQueries({
 		@NamedQuery(name = "User.findByUsername", query = "SELECT usr FROM User usr WHERE usr.username  = :name"),
 		@NamedQuery(name = "User.findByEmail", query = "SELECT usr FROM User usr WHERE usr.email  = :name"),
-		@NamedQuery(name = "User.findById", query = "SELECT usr FROM User usr WHERE usr.id  = :name"), 
-		})
+		@NamedQuery(name = "User.findById", query = "SELECT usr FROM User usr WHERE usr.id  = :name"), })
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 9047647663339787977L;

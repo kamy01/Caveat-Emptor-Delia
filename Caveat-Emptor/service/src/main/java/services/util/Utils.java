@@ -13,7 +13,6 @@ import model.UserDto;
 
 public class Utils {
 
-
 	public static UserRegistration getRegistrationFromDto(RegistrationDto dto) {
 
 		UserRegistration register = new UserRegistration();
@@ -30,7 +29,7 @@ public class Utils {
 
 		return register;
 	}
-	
+
 	public static RegistrationDto getRegistrationFromEntity(UserRegistration entity) {
 
 		RegistrationDto register = new RegistrationDto();
@@ -47,14 +46,13 @@ public class Utils {
 	public static UserDto getUserFromEntity(User entity) {
 
 		UserDto user = new UserDto();
-		
+
 		try {
-		user.setId(entity.getId());}
-		catch (Exception e)
-		{
+			user.setId(entity.getId());
+		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+
 		user.setFirstName(entity.getFirstName());
 		user.setLastName(entity.getLastName());
 		user.setPassword(entity.getPassword());
@@ -102,5 +100,5 @@ public class Utils {
 
 		return entity;
 	}
-	
+
 }

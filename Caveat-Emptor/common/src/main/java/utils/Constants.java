@@ -15,4 +15,5 @@ public class Constants {
 	public static final String REGISTRATION_ERROR = "The register is incorrect! Please check your info!";
 	public static final String CORRECT_REGISTER = "Registered correctly. Please wait for the confirmation email.";
 	public static final String USERNAME_ALREADY_USED = "This username is already taken!";
+	
 }

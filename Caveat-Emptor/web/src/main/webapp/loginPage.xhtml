@@ -37,21 +37,24 @@
 				<h3>Password:</h3>
 				<p:password type="password" id="password"
 					value="#{userLogin.password}" required="true"
-					requiredMessage="Password field must not be empty"  validatorMessage="Password is too short!">
-					<f:validateLength minimum="4"/>
-					<p:clientValidator/>
+					requiredMessage="Password field must not be empty"
+					validatorMessage="Password is too short!">
+					<f:validateLength minimum="4" />
+					<p:clientValidator />
 				</p:password>
 
 				<p:message for="password"></p:message>
 
 				<br />
 
-				<p:commandButton action="#{userLogin.login}" value="Login" update="growl" />
+				<p:commandButton action="#{userLogin.login}" value="Login"
+					update="growl" />
 				<p:commandButton value="Reset" type="reset" />
 
-				<br></br> 
-				
-				<h:outputLink value="register.xhtml" class="sign-up">Sign Up!</h:outputLink><br />
+				<br></br>
+
+				<h:outputLink value="register.xhtml" class="sign-up">Sign Up!</h:outputLink>
+				<br />
 			</div>
 		</h:form>
 	</div>

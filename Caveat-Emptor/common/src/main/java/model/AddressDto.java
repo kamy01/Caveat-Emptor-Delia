@@ -1,7 +1,10 @@
 package model;
 
-public class AddressDto {
+import java.io.Serializable;
 
+public class AddressDto implements Serializable {
+
+	private static final long serialVersionUID = 6288728117050804860L;
 	private Long id;
 	private String streetName;
 	private String zipcode;
@@ -42,5 +45,5 @@ public class AddressDto {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
+
 }

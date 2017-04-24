@@ -4,6 +4,8 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
+import org.apache.openjpa.util.UserException;
+
 import entities.User;
 import entities.UserRegistration;
 import model.RegistrationDto;
@@ -22,7 +24,7 @@ public class RegisterServiceImpl implements RegisterService {
 	UserRepository user;
 
 	@Override
-	public UserDto insertNewUser(RegistrationDto registration) {
+	public UserDto insertNewUser(RegistrationDto registration) throws utils.UserException{
 
 		UserRegistration userRegistration = Utils.getRegistrationFromDto(registration);
 		long userId = user.insertNewUser(userRegistration);
@@ -44,26 +46,21 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 
 	@Override
-	public boolean enableUser(Long userId, String code) {
+	public boolean enableUser(Long userId, String code) throws utils.UserException {
 
 		RegistrationDto registration = getRegistrationById(userId);
-		
-		if(registration.getId() == -1)
-		{
-			return false;
-		}
-		
+
 		if ((registration.getUser().getId() == userId) && (registration.getValidationCode().equals(code))) {
-			
+
 			UserDto userDto = registration.getUser();
 			userDto.setState(UserStateEnum.ENABLED.getState());
-			
+
 			User userEntity = (Utils.getUserFromDto(userDto));
 			user.updateUser(userEntity);
-			
+
 			UserRegistration userReg = Utils.getRegistrationFromDto(registration);
 			userReg.setId(registration.getId());
-			
+
 			user.deleteRegistration(userReg);
 			return true;
 		}
@@ -72,23 +69,20 @@ public class RegisterServiceImpl implements RegisterService {
 
 	}
 
-	public RegistrationDto getRegistrationById(long userId) {
+	public RegistrationDto getRegistrationById(long userId) throws utils.UserException {
 
 		RegistrationDto registrationDto = new RegistrationDto();
 
 		UserRegistration registration = user.getRegistrationByUserId(userId);
-		if (registration.getId() != -1) {
-			registrationDto = Utils.getRegistrationFromEntity(registration);
-		} else {
-			registrationDto.setId((long) -1);
-		}
-
+		
+		registrationDto = Utils.getRegistrationFromEntity(registration);
+		
 		return registrationDto;
 
 	}
 
 	@Override
-	public void createNewUser(RegistrationDto registration) {
+	public void createNewUser(RegistrationDto registration) throws utils.UserException {
 
 		registration.setUser(insertNewUser(registration));
 		ConfirmationEmail.sendEmail(registration);

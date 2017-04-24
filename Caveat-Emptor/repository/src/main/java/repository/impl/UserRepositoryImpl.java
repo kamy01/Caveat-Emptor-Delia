@@ -3,7 +3,6 @@ package repository.impl;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -11,7 +10,7 @@ import entities.User;
 import entities.UserRegistration;
 import repository.UserRepository;
 import utils.Constants;
-import utils.UserStateEnum;
+import utils.UserException;
 
 @Stateless
 @Remote(UserRepository.class)
@@ -20,7 +19,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@PersistenceContext(unitName = "myapp")
 	EntityManager em;
 
-	public User getUserByName(String username) {
+	public User getUserByName(String username) throws UserException {
 
 		User user = new User();
 		try {
@@ -29,8 +28,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 			user = (User) query.setParameter("name", username).getSingleResult();
 		} catch (Exception e) {
-			System.out.println("Error in UserRepository " + e);
-			return user;
+			throw new UserException("Error in UserRepository " + e);
 		}
 
 		return user;
@@ -62,33 +60,32 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public long insertNewUser(UserRegistration registration) {
+	public long insertNewUser(UserRegistration registration) throws UserException {
 
 		try {
 			em.persist(registration);
 			em.flush();
 			return registration.getUser().getId();
 		} catch (Exception e) {
-			e.printStackTrace();
-			return -1;
+			throw new UserException("Error while trying to insert new user." + e);
 		}
 	}
 
 	@Override
-	public void updateUser(User user) {
-		
-		
+	public void updateUser(User user) throws UserException {
+
 		try {
 			em.merge(user);
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new UserException("Error while trying to update a user." + e);
 		}
 
 	}
 
 	@Override
-	public User getUserById(long id) {
+	public User getUserById(long id) throws UserException {
 
 		User user = new User();
 		try {
@@ -98,14 +95,14 @@ public class UserRepositoryImpl implements UserRepository {
 			user = (User) query.setParameter("name", id).getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return user;
+			throw new UserException("Error while trying to find a user by an id " + e);
 		}
 
 		return user;
 	}
 
 	@Override
-	public UserRegistration getRegistrationByUserId(long id) {
+	public UserRegistration getRegistrationByUserId(long id) throws UserException {
 
 		UserRegistration registration = new UserRegistration();
 		try {
@@ -115,19 +112,18 @@ public class UserRepositoryImpl implements UserRepository {
 			registration = (UserRegistration) query.setParameter("name", id).getSingleResult();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			registration.setId((long) -1);
+			throw new UserException("Error while trying to find a registration by an user id: " + e);
 		}
 
 		return registration;
 	}
 
 	@Override
-	public void deleteRegistration(UserRegistration registration) {
+	public void deleteRegistration(UserRegistration registration) throws UserException {
 		try {
 			em.remove(em.contains(registration) ? registration : em.merge(registration));
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new UserException("Error while trying to delete a registration: " + e);
 		}
 	}
 

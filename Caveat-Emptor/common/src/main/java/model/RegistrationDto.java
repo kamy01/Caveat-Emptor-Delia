@@ -1,14 +1,15 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RegistrationDto {
+public class RegistrationDto implements Serializable {
 
+	private static final long serialVersionUID = 4071270365690194389L;
 	private Long id;
 	private UserDto user;
 	private Date expirationDate;
 	private String validationCode;
-
 
 	public RegistrationDto() {
 		super();

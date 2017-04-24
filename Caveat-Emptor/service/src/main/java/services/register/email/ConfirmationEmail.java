@@ -3,7 +3,6 @@ package services.register.email;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;

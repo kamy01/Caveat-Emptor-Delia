@@ -15,6 +15,7 @@ import model.UserDto;
 import services.register.RegisterService;
 import services.register.email.ConfirmationEmail;
 import utils.Constants;
+import utils.UserException;
 import utils.UserStateEnum;
 
 @ManagedBean(name = "userRegister")
@@ -124,12 +125,15 @@ public class UserRegistrationBean {
 		registration.setValidationCode(UUID.randomUUID().toString());
 
 		if (usernameValid && emailValid) {
-			
-			registerService.createNewUser(registration);
-			
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-					Constants.CORRECT_REGISTER, username);
-			
+
+			try {
+				registerService.createNewUser(registration);
+			} catch (UserException e) {
+				e.printStackTrace();
+			}
+
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.CORRECT_REGISTER, username);
+
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return "success.xhtml?faces-redirect=true";
 
@@ -163,7 +167,8 @@ public class UserRegistrationBean {
 
 			context.addMessage(null,
 
-					new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.REGISTRATION_ERROR_TITLE, Constants.USERNAME_ALREADY_USED));
+					new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.REGISTRATION_ERROR_TITLE,
+							Constants.USERNAME_ALREADY_USED));
 			usernameValid = false;
 
 		} else {

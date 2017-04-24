@@ -1,7 +1,10 @@
 package model;
 
-public class UserDto {
+import java.io.Serializable;
 
+public class UserDto implements Serializable {
+
+	private static final long serialVersionUID = 4508678000331480402L;
 	private long id;
 	private String username;
 	private String password;
