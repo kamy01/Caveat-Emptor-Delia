@@ -3,6 +3,7 @@ package com.biddingapp.beans;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,110 +14,38 @@ import model.AddressDto;
 import model.RegistrationDto;
 import model.UserDto;
 import services.register.RegisterService;
-import services.register.email.ConfirmationEmail;
 import utils.Constants;
-import utils.UserException;
+import utils.exceptions.*;
 import utils.UserStateEnum;
 
 @ManagedBean(name = "userRegister")
 @ViewScoped
 public class UserRegistrationBean {
 
-	private String username;
-	private String password;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private String city;
-	private String street;
-	private String zipcode;
-	private boolean usernameValid = true;
-	private boolean emailValid = true;
-
+	private UserDto user;
+	private AddressDto address;
+	private RegistrationDto registration;
+	private boolean usernameValid;
+	private boolean emailValid;
+	
+	
 	@EJB
 	RegisterService registerService;
 
-	public String getUsername() {
-		return username;
-	}
+	@PostConstruct
+	public void init() {
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getZipcode() {
-		return zipcode;
-	}
-
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
+		user = new UserDto();
+		address = new AddressDto();
+		registration = new RegistrationDto();
+		usernameValid = true;
+		emailValid = true;
 	}
 
 	public String register() {
 
 		FacesMessage message = null;
 
-		RegistrationDto registration = new RegistrationDto();
-		UserDto user = new UserDto();
-		AddressDto address = new AddressDto();
-
-		address.setCity(city);
-		address.setStreetName(street);
-		address.setZipcode(zipcode);
-
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setUsername(username);
-		user.setPassword(password);
-		user.setEmail(email);
 		user.setState(UserStateEnum.PENDING.getState());
 		user.setAddress(address);
 
@@ -132,7 +61,7 @@ public class UserRegistrationBean {
 				e.printStackTrace();
 			}
 
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.CORRECT_REGISTER, username);
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.CORRECT_REGISTER, user.getUsername());
 
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return "success.xhtml?faces-redirect=true";
@@ -149,7 +78,7 @@ public class UserRegistrationBean {
 	public void isEmailRegistered() {
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		if (registerService.checkExistingEmail(email)) {
+		if (registerService.checkExistingEmail(user.getEmail())) {
 
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.REGISTRATION_ERROR_TITLE,
 					Constants.EMAIL_ALREADY_USED));
@@ -163,7 +92,7 @@ public class UserRegistrationBean {
 	public void isUsernameRegistered() {
 
 		FacesContext context = FacesContext.getCurrentInstance();
-		if (registerService.checkExistingUser(username)) {
+		if (registerService.checkExistingUser(user.getUsername())) {
 
 			context.addMessage(null,
 
@@ -190,5 +119,29 @@ public class UserRegistrationBean {
 
 	public void setEmailValid(boolean emailValid) {
 		this.emailValid = emailValid;
+	}
+
+	public UserDto getUser() {
+		return user;
+	}
+
+	public void setUser(UserDto user) {
+		this.user = user;
+	}
+
+	public AddressDto getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressDto address) {
+		this.address = address;
+	}
+
+	public RegistrationDto getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(RegistrationDto registration) {
+		this.registration = registration;
 	}
 }

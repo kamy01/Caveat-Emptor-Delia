@@ -1,17 +1,23 @@
 package services.util;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import entities.Category;
 import entities.User;
 import entities.UserAddress;
 import entities.UserRegistration;
 import model.AddressDto;
+import model.CategoryDto;
 import model.RegistrationDto;
 import model.UserDto;
 
 public class Utils {
+
+	public static final Category NULL_CATEGORY = new Category();
 
 	public static UserRegistration getRegistrationFromDto(RegistrationDto dto) {
 
@@ -41,6 +47,33 @@ public class Utils {
 		register.setExpirationDate(time);
 
 		return register;
+	}
+
+	public static CategoryDto getCategoryFromEntity(Category category) {
+
+		CategoryDto categoryDto = new CategoryDto();
+		categoryDto.setId(category.getId());
+		categoryDto.setName(category.getName());
+		categoryDto.setDescription(category.getDescription());
+		categoryDto.setParentId(category.getParentId());
+
+		return categoryDto;
+	}
+
+	public static Category getCategoryFromDto(CategoryDto categoryDto) {
+
+		Category category = new Category();
+		try {
+		category.setId(categoryDto.getId()); }
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		category.setName(categoryDto.getName());
+		category.setDescription(categoryDto.getDescription());
+		category.setParentId(categoryDto.getParentId());
+		
+		return category;
 	}
 
 	public static UserDto getUserFromEntity(User entity) {
@@ -90,7 +123,7 @@ public class Utils {
 		return entity;
 	}
 
-	private static UserAddress getAdressFromDto(AddressDto address) {
+	public static UserAddress getAdressFromDto(AddressDto address) {
 
 		UserAddress entity = new UserAddress();
 		entity.setId(address.getId());
@@ -99,6 +132,16 @@ public class Utils {
 		entity.setCity(address.getCity());
 
 		return entity;
+	}
+
+	public static List<CategoryDto> getCategoriesFromEntities(List<Category> entities) {
+
+		List<CategoryDto> categories = new ArrayList<CategoryDto>();
+		for (Category category : entities) {
+			categories.add(getCategoryFromEntity(category));
+		}
+
+		return categories;
 	}
 
 }

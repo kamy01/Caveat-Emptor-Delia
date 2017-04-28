@@ -4,7 +4,7 @@
 	version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
 	<display-name>Caveat Emptor</display-name>
 	<welcome-file-list>
-		<welcome-file>loginPage.xhtml</welcome-file>
+		<welcome-file>pages/loginPage.xhtml</welcome-file>
 	</welcome-file-list>
 	<session-config>
 		<session-timeout>30</session-timeout>
@@ -20,7 +20,7 @@
 	</context-param>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>hot-sneaks</param-value>
+		<param-value>smoothness</param-value>
 	</context-param>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>

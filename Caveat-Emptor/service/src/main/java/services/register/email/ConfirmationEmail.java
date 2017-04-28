@@ -12,31 +12,30 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.openjpa.util.UserException;
+
 import model.RegistrationDto;
 
 public class ConfirmationEmail {
 
 	public static final String MAIL_REGISTRATION_SITE_LINK = "http://localhost:8080/Web/enableUser.xhtml";
 
-	public static void sendEmail(RegistrationDto registration) {
+	public static void sendEmail(RegistrationDto registration) throws UserException {
 
 		Properties properties = getProperties();
 		Session session = createSession(properties);
 
 		try {
-
 			Message message = writeEmail(registration, session);
 
 			try {
 				Transport.send(message);
 			} catch (Exception e) {
-				e.printStackTrace();
-				return;
+				throw new UserException(e + " in sendEmail() method - ConfirmationEmail class");
 			}
-			System.out.println("Sent message successfully....");
 
 		} catch (MessagingException mex) {
-			mex.printStackTrace();
+			throw new UserException(mex + " in sendEmail() method - ConfirmationEmail class");
 		}
 	}
 

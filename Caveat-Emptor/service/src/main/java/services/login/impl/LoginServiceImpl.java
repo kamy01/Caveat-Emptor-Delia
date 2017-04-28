@@ -9,7 +9,7 @@ import model.UserDto;
 import repository.UserRepository;
 import services.login.LoginService;
 import services.util.Utils;
-import utils.UserException;
+import utils.exceptions.UserException;
 
 @Stateless
 @Remote(LoginService.class)

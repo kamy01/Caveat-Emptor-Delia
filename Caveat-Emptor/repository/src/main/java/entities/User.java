@@ -11,6 +11,10 @@ import javax.persistence.*;
 		@NamedQuery(name = "User.findById", query = "SELECT usr FROM User usr WHERE usr.id  = :name"), })
 public class User implements Serializable {
 
+	public static final String FIND_USER_BY_USERNAME = "User.findByUsername";
+	public static final String FIND_USER_BY_EMAIL = "User.findByEmail";
+	public static final String FIND_USER_BY_ID = "User.findById";
+	
 	private static final long serialVersionUID = 9047647663339787977L;
 
 	@Id

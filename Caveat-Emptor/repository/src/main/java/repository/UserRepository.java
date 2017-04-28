@@ -2,7 +2,7 @@ package repository;
 
 import entities.User;
 import entities.UserRegistration;
-import utils.UserException;
+import utils.exceptions.UserException;
 
 public interface UserRepository {
 
@@ -10,9 +10,9 @@ public interface UserRepository {
 
 	public long insertNewUser(UserRegistration registration) throws UserException;
 
-	public boolean checkExistingUser(String userName);
+	public boolean checkExistingUser(String userName) throws UserException;
 
-	public boolean checkExistingEmail(String email);
+	public boolean checkExistingEmail(String email) throws UserException;
 
 	public void updateUser(User user) throws UserException;
 

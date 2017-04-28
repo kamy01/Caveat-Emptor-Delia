@@ -2,11 +2,6 @@ package utils;
 
 public class Constants {
 
-	public static final String FIND_USER_BY_USERNAME = "User.findByUsername";
-	public static final String FIND_USER_BY_EMAIL = "User.findByEmail";
-	public static final String FIND_USER_BY_ID = "User.findById";
-	public static final String FIND_ADDRESS_BY_USERID = "UserAddress.findAddressByUserId";
-	public static final String FIND_REGISTRATION_BY_USERID = "UserRegistration.findRegistrationByUserId";
 	public static final String LOGIN_ERROR="Loggin Error";
 	public static final String INVALID_CREDENTIALS = "Invalid credentials";
 	public static final String WELCOME = "Welcome";

@@ -1,6 +1,23 @@
 body {
 	margin: 0px;
 	font-family: 'Ubuntu', sans-serif;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+
+.caveat-body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+
+#header {
+	position: absolute;
+	width: 100%;
+	height: 8%;
+	border: 0px;
 }
 
 h1, h2, h3, h4, h5, h6, a {
@@ -13,6 +30,107 @@ h1, h2, h3, h4, h5, h6, a {
 	max-width: 500px;
 	background: url('http://cdn.wallpapersafari.com/29/57/jSKmkC.jpg')
 		no-repeat center;
+}
+
+.menu-tree {
+	height: 83.4%;
+	position: absolute;
+	width: 19.85%;
+	top: 8%;
+	bottom: 8%;
+	border: 3px solid grey;
+}
+
+.ui-tree, .ui-widgetm, .ui-widget-content, .ui-corner-all {
+	border-style: none !important;
+}
+
+.ui-tabs-nav {
+	background: none !important;
+	padding-left: 60% !important;
+}
+
+.ui-tabs-top {
+	top: -120px !important;
+	background: inherit !important;
+}
+
+#tree-div {
+	position: absolute;
+	width: 30%;
+	height: 80%;
+	left: 0%;
+	top: 0.2%;
+}
+
+#tree-form {
+	position: absolute;
+	top: 2%;
+	left: 1%;
+}
+
+#header-img {
+	position: absolute;
+	left: 1%;
+	top: 30%;
+}
+
+#content-div {
+	position: absolute;
+	width: 79.7%;
+	height: 83.4%;
+	left: 20%;
+	top: 8%;
+	border: 3px solid grey;
+	right: 1%;
+}
+
+#content-page {
+	position: absolute;
+	width: 90.7%;
+	height: 78.4%;
+	left: 5%;
+	top: 8%;
+	border: 3px solid grey;
+	right: 1%;
+}
+
+
+#search-popup {
+	position: absolute;
+	width: inherit;
+	height: inherit;
+	left: 5%;
+	top: 170%;
+}
+
+#breadcrump-div {
+	top: 250%;
+	left: 5%;
+	position: absolute;
+	width: inherit;
+	height: 10%;
+	position: absolute;
+}
+
+#categories-destails-div {
+	position: absolute;
+	width: 88%;
+	height: inherit;
+	left: 5%;
+	top: 350%;
+}
+
+#footer-message {
+	text-align: center;
+}
+
+.footer {
+	position: absolute;
+	width: 100%;
+	height: 8%;
+	bottom: 0;
+	border: 0;
 }
 
 .register {
@@ -43,8 +161,6 @@ h1, h2, h3, h4, h5, h6, a {
 	border-radius: 10px;
 	box-shadow: 0px 0px 10px #000;
 }
-
-
 
 .login-form h3 {
 	text-align: left;
@@ -90,15 +206,7 @@ h1, h2, h3, h4, h5, h6, a {
 	padding-left: 10px;
 }
 
-.login-form input[type="button"] {
-	height: 30px;
-	width: 100px;
-	background: #fff;
-	border: 1px solid #f2f2f2;
-	border-radius: 20px;
-	color: slategrey;
-	text-transform: uppercase;
-	font-family: 'Ubuntu', sans-serif;
+.ui-button-text {
 	cursor: pointer;
 }
 
@@ -108,47 +216,24 @@ h1, h2, h3, h4, h5, h6, a {
 	cursor: pointer;
 	text-decoration: underline;
 }
+.ui-inputfield, .ui-inputtextarea {
+	
+	border: 1px solid black;
 
-.no-access {
-	color: #E86850;
-	margin: 20px 0px 20px -57%;
-	text-decoration: underline;
-	cursor: pointer;
 }
 
-.try-again {
-	color: #f2f2f2;
-	text-decoration: underline;
-	cursor: pointer;
-}
 
 /*Media Querie*/
-@media
-only
-screen
-and
-(min-width
-:
-150px)
-and
-(max-width
-:
-530px)
-{
-.login-form h3 {
-	text-align: center;
-	margin: 0;
-}
-
-.register-form h4 {
-	text-align: center;
-	margin: 0;
-}
-.sign-up, .no-access {
-	margin: 10px 0;
-}
-
-.login-button {
-	margin-bottom: 10px;
-}
+@media only screen and (min-width : 150px) and (max-width : 530px) {
+	.login-form h3 {
+		text-align: center;
+		margin: 0;
+	}
+	.register-form h4 {
+		text-align: center;
+		margin: 0;
+	}
+	.login-button {
+		margin-bottom: 10px;
+	}
 }

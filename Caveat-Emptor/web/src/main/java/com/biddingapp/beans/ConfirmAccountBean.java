@@ -6,7 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import services.register.RegisterService;
-import utils.UserException;
+import utils.exceptions.*;
 
 @ManagedBean(name = "activationBean")
 @RequestScoped
@@ -30,10 +30,9 @@ public class ConfirmAccountBean {
 				enabled = true;
 			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println(e + " in ConfirmAccountBean init() method for userId=" + userId);
 		} catch (UserException e) {
-			System.out.println("Too bad" + e);
+			System.err.println(e + " in ConfirmAccountBean init() method");
 		}
 	}
 

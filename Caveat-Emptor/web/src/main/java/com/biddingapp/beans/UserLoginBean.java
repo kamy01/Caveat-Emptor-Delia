@@ -9,7 +9,7 @@ import javax.faces.context.FacesContext;
 import model.UserDto;
 import services.login.LoginService;
 import utils.Constants;
-import utils.UserException;
+import utils.exceptions.*;
 import utils.UserStateEnum;
 
 @ManagedBean(name = "userLogin")
@@ -59,7 +59,7 @@ public class UserLoginBean {
 		if (!userDto.equals(null) && passwordMatch && usernameMatch && isEnabled) {
 
 			FacesContext.getCurrentInstance().addMessage(null, success);
-			return "success.xhtml?faces-redirect=true";
+			return "caveatEmptor.xhtml?faces-redirect=true";
 
 		} else {
 

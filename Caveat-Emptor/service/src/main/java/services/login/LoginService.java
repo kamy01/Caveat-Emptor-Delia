@@ -1,7 +1,7 @@
 package services.login;
 
 import model.UserDto;
-import utils.UserException;
+import utils.exceptions.UserException;
 
 public interface LoginService {
 
