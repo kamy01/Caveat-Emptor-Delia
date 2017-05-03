@@ -66,28 +66,18 @@ public class ConfirmationEmail {
 
 	private static Properties getProperties() {
 		Properties properties = new Properties();
-		InputStream input = null;
+		String filename = "config.properties";
 
-		try {
+		try(InputStream input = ConfirmationEmail.class.getClassLoader().getResourceAsStream(filename)) {
 
-			String filename = "config.properties";
-			input = ConfirmationEmail.class.getClassLoader().getResourceAsStream(filename);
 			if (input == null) {
 				System.out.println("Sorry, unable to find " + filename);
 			}
 
 			properties.load(input);
 
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return properties;
 	}

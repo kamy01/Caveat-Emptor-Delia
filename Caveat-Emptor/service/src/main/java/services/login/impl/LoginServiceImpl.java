@@ -16,12 +16,12 @@ import utils.exceptions.UserException;
 public class LoginServiceImpl implements LoginService {
 
 	@EJB
-	UserRepository user;
+	UserRepository repository;
 
 	@Override
 	public UserDto getUser(String username) throws UserException {
 
-		User userEntity = user.getUserByName(username);
+		User userEntity = repository.getUserByName(username);
 		UserDto userDto = Utils.getUserFromEntity(userEntity);
 
 		return userDto;

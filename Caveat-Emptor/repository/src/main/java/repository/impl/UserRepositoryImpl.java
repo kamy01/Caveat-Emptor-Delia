@@ -11,7 +11,6 @@ import javax.persistence.TransactionRequiredException;
 import entities.User;
 import entities.UserRegistration;
 import repository.UserRepository;
-import utils.Constants;
 import utils.exceptions.UserException;
 
 @Stateless

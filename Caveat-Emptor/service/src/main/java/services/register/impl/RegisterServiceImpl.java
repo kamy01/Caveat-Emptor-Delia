@@ -20,14 +20,14 @@ import utils.UserStateEnum;
 public class RegisterServiceImpl implements RegisterService {
 
 	@EJB
-	UserRepository user;
+	UserRepository repository;
 
 	@Override
 	public UserDto insertNewUser(RegistrationDto registration) throws UserException {
 
 		UserRegistration userRegistration = Utils.getRegistrationFromDto(registration);
-		long userId = user.insertNewUser(userRegistration);
-		User newUser = user.getUserById(userId);
+		long userId = repository.insertNewUser(userRegistration);
+		User newUser = repository.getUserById(userId);
 
 		return Utils.getUserFromEntity(newUser);
 	}
@@ -36,7 +36,7 @@ public class RegisterServiceImpl implements RegisterService {
 	public boolean checkExistingUser(String userName) {
 
 		try {
-			return user.checkExistingUser(userName);
+			return repository.checkExistingUser(userName);
 		} catch (UserException e) {
 			// TODO Auto-generated catch block
 			return false;
@@ -47,7 +47,7 @@ public class RegisterServiceImpl implements RegisterService {
 	public boolean checkExistingEmail(String email) {
 
 		try {
-			return user.checkExistingEmail(email);
+			return repository.checkExistingEmail(email);
 		} catch (UserException e) {
 			return false;
 		}
@@ -74,7 +74,7 @@ public class RegisterServiceImpl implements RegisterService {
 		UserRegistration userReg = Utils.getRegistrationFromDto(registration);
 		userReg.setId(registration.getId());
 
-		user.deleteRegistration(userReg);
+		repository.deleteRegistration(userReg);
 	}
 
 	private void changeUserState(RegistrationDto registration) throws UserException {
@@ -82,13 +82,13 @@ public class RegisterServiceImpl implements RegisterService {
 		UserDto userDto = registration.getUser();
 		userDto.setState(UserStateEnum.ENABLED.getState());
 		User userEntity = (Utils.getUserFromDto(userDto));
-		user.updateUser(userEntity);
+		repository.updateUser(userEntity);
 	}
 
 	public RegistrationDto getRegistrationById(long userId) throws UserException {
 
 		RegistrationDto registrationDto = new RegistrationDto();
-		UserRegistration registration = user.getRegistrationByUserId(userId);
+		UserRegistration registration = repository.getRegistrationByUserId(userId);
 		registrationDto = Utils.getRegistrationFromEntity(registration);
 
 		return registrationDto;

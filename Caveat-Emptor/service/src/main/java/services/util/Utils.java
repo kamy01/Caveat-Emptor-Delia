@@ -17,8 +17,6 @@ import model.UserDto;
 
 public class Utils {
 
-	public static final Category NULL_CATEGORY = new Category();
-
 	public static UserRegistration getRegistrationFromDto(RegistrationDto dto) {
 
 		UserRegistration register = new UserRegistration();
