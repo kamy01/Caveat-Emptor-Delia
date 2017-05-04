@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Insert title here</title>
+</h:head>
+<h:body>
+	<div id="categories-div">
+		<h:form id="category-form">
+			<p:growl id="growl" sticky="false" showDetail="true" life="30000" />
+			<div id="search-popup">
+				<span style="display: inline;" id="search-span"> 
+				<p:inputText
+						id="searchCategory" type="text" required="true" label="Text 1"
+						value="#{categoriesPageBean.searchValue}"
+						placeholder="Search category" autocomplete="off"
+						onkeypress="if (event.keyCode == 13){event.target.blur();event.stopPropagation();return false;} else {return true;};">
+
+						<p:ajax event="change" listener="#{categoriesPageBean.searchForCategory}"
+							update="content-form:tabView:search-tab" process="@form"></p:ajax>
+							
+					</p:inputText> <p:commandButton value="Create new"
+						style="left:30%;position:relative;">
+						<p:ajax listener="#{categoriesPageBean.reset}"
+							update="content-form:tabView" />
+					</p:commandButton>
+				</span> <br></br>
+			</div>
+
+			<div id="breadcrump-div">
+				<p:breadCrumb id="breadcrumb-model" model="#{breadCrumb.model}">
+				</p:breadCrumb>
+
+			</div>
+			<div id="categories-destails-div">
+				<h:form id="categories-form">
+					<p:panel id="panel" style="margin-top:10; margin-left:5px;">
+						<h:panelGrid id="categories-details-grid" columns="2"
+							cellpadding="5">
+							<h:outputLabel for="name" value="Name" />
+							<p:inputTextarea id="name" rows="1" cols="70"
+								value="#{categoriesPageBean.category.name}" />
+
+							<p:outputLabel for="description" value="Description:" />
+							<p:inputTextarea id="description" rows="10" cols="70"
+								value="#{categoriesPageBean.category.description}" />
+						</h:panelGrid>
+					</p:panel>
+
+					<br></br>
+					<br></br>
+
+					<p:commandButton id="saveCategoryButton"
+						style="left:20%;position:relative;" value="Save" update="panel">
+						<p:ajax listener="#{categoriesPageBean.save}" process="@form"
+							update="content-form:tree"></p:ajax>
+					</p:commandButton>
+					<p:commandButton id="removeCategoryButton"
+						style="left:35%;position:relative;" value="Remove" class="space"
+						update="panel">
+						<p:ajax listener="#{categoriesPageBean.remove}" process="@form"
+							update="content-form:tree" />
+					</p:commandButton>
+				</h:form>
+			</div>
+		</h:form>
+	</div>
+	<p:tab id="search-tab">
+<p:dialog header="Search Results" widgetVar="dlg1" minHeight="40"
+			id="dialog">
+			<p:dataGrid columns="5" value="#{categoriesPageBean.searchResults}"
+				var="item">
+				<p:column>
+					<h:outputText value="#{item.getName()}" />
+				</p:column>
+			</p:dataGrid>
+		</p:dialog>
+</p:tab>
+	<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true"
+		height="100">
+		<h:outputText value="#{categoriesPageBean.searchValue}" />
+	</p:dialog>
+
+	<p:dialog header="Effects" widgetVar="dlg3" showEffect="explode"
+		hideEffect="bounce" height="100">
+		<h:outputText value="#{categoriesPageBean.searchValue}" />
+	</p:dialog>
+</h:body>
+</h:html>
