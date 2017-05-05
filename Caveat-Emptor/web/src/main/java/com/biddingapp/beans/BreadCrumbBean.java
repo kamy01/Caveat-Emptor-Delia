@@ -18,12 +18,9 @@ public class BreadCrumbBean {
 	private MenuModel model;
 
 	public BreadCrumbBean() {
-		
-		createMenu();
-		
+		createMenu();	
 	}
 	
-
 	@PostConstruct
 	private void createMenu() {
 		

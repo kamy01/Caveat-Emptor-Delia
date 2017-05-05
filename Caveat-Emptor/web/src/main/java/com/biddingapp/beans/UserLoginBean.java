@@ -8,9 +8,9 @@ import javax.faces.context.FacesContext;
 
 import model.UserDto;
 import services.login.LoginService;
-import utils.Constants;
-import utils.exceptions.*;
+import utils.ConstantsEnum;
 import utils.UserStateEnum;
+import utils.exceptions.UserException;
 
 @ManagedBean(name = "userLogin")
 @ViewScoped
@@ -40,9 +40,9 @@ public class UserLoginBean {
 
 	public String login() {
 
-		FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.LOGIN_ERROR,
-				Constants.INVALID_CREDENTIALS),
-				success = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.WELCOME, username);
+		FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN, ConstantsEnum.LOGIN_ERROR.getConstant(),
+				ConstantsEnum.INVALID_CREDENTIALS.getConstant()),
+				success = new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantsEnum.WELCOME.getConstant(), username);
 
 		UserDto userDto = new UserDto();
 		try {

@@ -14,7 +14,7 @@ import model.AddressDto;
 import model.RegistrationDto;
 import model.UserDto;
 import services.register.RegisterService;
-import utils.Constants;
+import utils.ConstantsEnum;
 import utils.exceptions.*;
 import utils.UserStateEnum;
 
@@ -61,14 +61,14 @@ public class UserRegistrationBean {
 				e.printStackTrace();
 			}
 
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.CORRECT_REGISTER, user.getUsername());
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantsEnum.CORRECT_REGISTER.getConstant(), user.getUsername());
 
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return "success.xhtml?faces-redirect=true";
 
 		} else {
-			message = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.REGISTRATION_ERROR_TITLE,
-					Constants.REGISTRATION_ERROR);
+			message = new FacesMessage(FacesMessage.SEVERITY_WARN, ConstantsEnum.REGISTRATION_ERROR_TITLE.getConstant(),
+					ConstantsEnum.REGISTRATION_ERROR.getConstant());
 
 			FacesContext.getCurrentInstance().addMessage(null, message);
 			return null;
@@ -80,8 +80,8 @@ public class UserRegistrationBean {
 
 		if (registerService.checkExistingEmail(user.getEmail())) {
 
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.REGISTRATION_ERROR_TITLE,
-					Constants.EMAIL_ALREADY_USED));
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, ConstantsEnum.REGISTRATION_ERROR_TITLE.getConstant(),
+					ConstantsEnum.EMAIL_ALREADY_USED.getConstant()));
 
 			emailValid = false;
 		} else {
@@ -96,8 +96,8 @@ public class UserRegistrationBean {
 
 			context.addMessage(null,
 
-					new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.REGISTRATION_ERROR_TITLE,
-							Constants.USERNAME_ALREADY_USED));
+					new FacesMessage(FacesMessage.SEVERITY_WARN, ConstantsEnum.REGISTRATION_ERROR_TITLE.getConstant(),
+							ConstantsEnum.USERNAME_ALREADY_USED.getConstant()));
 			usernameValid = false;
 
 		} else {

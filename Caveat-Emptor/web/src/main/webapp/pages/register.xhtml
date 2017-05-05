@@ -31,15 +31,17 @@
 			<div class="register-form">
 
 				<h3>User information:</h3>
-
 				<p:inputText id="firstname" type="text" placeholder="Firstname"
-					value="#{userRegister.user.firstName}" required="true" />
+					value="#{userRegister.user.firstName}" required="true"
+					requiredMessage="Firstname field can't be empty!" />
 				<p:inputText id="lastname" type="text"
 					value="#{userRegister.user.lastName}" required="true"
-					placeholder="Lastname" />
+					placeholder="Lastname"
+					requiredMessage="Lastname field can't be empty!" />
 
-				<p:inputText id="email" value="#{userRegister.user.email}" type="text"
-					required="true" placeholder="Email"
+				<p:inputText id="email" value="#{userRegister.user.email}"
+					type="text" required="true" placeholder="CaveatEmptor@gmail.com"
+					requiredMessage="Email field can't be empty!"
 					validatorMessage="Invalid email format">
 					<f:validateRegex
 						pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
@@ -50,6 +52,7 @@
 
 				<p:inputText id="username" type="text"
 					value="#{userRegister.user.username}" required="true"
+					requiredMessage="Username must not be empty!"
 					placeholder="Username">
 					<p:ajax event="blur" update="growl"
 						listener="#{userRegister.isUsernameRegistered}" />
@@ -72,10 +75,10 @@
 
 				<h3>Shipping details:</h3>
 
-				<p:inputText id="city" value="#{userRegister.address.city}" type="text"
-					required="true" placeholder="City" />
-				<p:inputText id="street" value="#{userRegister.address.streetName}" type="text"
-					required="true" placeholder="Street" />
+				<p:inputText id="city" value="#{userRegister.address.city}"
+					type="text" required="true" placeholder="City" />
+				<p:inputText id="street" value="#{userRegister.address.streetName}"
+					type="text" required="true" placeholder="Street" />
 				<p:inputText id="zipcode" value="#{userRegister.address.zipcode}"
 					type="text" required="true" placeholder="Zipcode" />
 

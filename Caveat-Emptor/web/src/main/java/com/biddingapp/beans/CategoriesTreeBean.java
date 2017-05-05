@@ -128,10 +128,11 @@ public class CategoriesTreeBean implements Serializable {
 			}
 		}
 
-		return null;
+		return totalNodes;
 
 	}
 
+	
 	public List<CategoryDto> getCategories() {
 		
 		List<TreeNode> nodes = new ArrayList<>();

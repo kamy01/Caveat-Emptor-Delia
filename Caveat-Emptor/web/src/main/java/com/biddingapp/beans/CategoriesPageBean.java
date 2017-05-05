@@ -15,10 +15,11 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.model.TreeNode;
 
 import model.CategoryDto;
 import services.category.CategoryService;
-import utils.Constants;
+import utils.ConstantsEnum;
 import utils.exceptions.CategoryException;
 
 @ManagedBean(name = "categoriesPageBean")
@@ -45,9 +46,10 @@ public class CategoriesPageBean {
 
 	public void save() {
 
-		FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.LOGIN_ERROR,
-				Constants.INVALID_CREDENTIALS),
-				success = new FacesMessage(FacesMessage.SEVERITY_INFO, Constants.WELCOME, category.getName());
+		FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN, ConstantsEnum.LOGIN_ERROR.getConstant(),
+				ConstantsEnum.INVALID_CREDENTIALS.getConstant()),
+				success = new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantsEnum.WELCOME.getConstant(),
+						category.getName());
 
 		try {
 
@@ -77,8 +79,8 @@ public class CategoriesPageBean {
 		try {
 			service.removeCategory(category);
 		} catch (CategoryException e) {
-			FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN, Constants.LOGIN_ERROR,
-					Constants.INVALID_CREDENTIALS);
+			FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN, ConstantsEnum.LOGIN_ERROR.getConstant(),
+					ConstantsEnum.INVALID_CREDENTIALS.getConstant());
 			FacesContext.getCurrentInstance().addMessage(null, error);
 		}
 		treeBean.init();
@@ -97,12 +99,12 @@ public class CategoriesPageBean {
 
 			for (CategoryDto category : categories) {
 
-				if (category.getName().toLowerCase().equals(searchValue.toLowerCase())) {
+				if (category.getName().toLowerCase().contains(searchValue.toLowerCase())) {
 
 					searchResults.add(category);
 				}
 			}
-			
+
 			searchValue = null;
 		}
 	}
@@ -115,9 +117,46 @@ public class CategoriesPageBean {
 
 		}
 
+		updateBreadCrumbForSelectedCategory(category);
+
+	}
+
+	private void updateBreadCrumbForSelectedCategory(CategoryDto category) {
 		List<String> path = getPath(category);
 		breadCrumb.updateBreadCrumb(path);
+	}
 
+	private void expandParent(TreeNode child) {
+		if (child.getParent() != null) {
+			child.getParent().setExpanded(true);
+			expandParent(child.getParent());
+		}
+	}
+
+	private void expandNode(CategoryDto category) {
+		List<TreeNode> nodes = treeBean.getChildrenList(treeBean.getRoot());
+
+		for (TreeNode node : nodes) {
+			if (((CategoryDto) node.getData()).getName().toLowerCase().equals(category.getName().toLowerCase())) {
+				node.setSelected(true);
+				treeBean.setSelectedNode(node);
+				updateBreadCrumbForSelectedCategory((CategoryDto) node.getData());
+				expandParent(node);
+				break;
+			}
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private List<TreeNode> getExpandedNodes(CategoriesTreeBean tree) {
+		List<TreeNode> nodes = tree.getChildrenList(tree.getRoot());
+		List<TreeNode> expandedNodes = new ArrayList<TreeNode>();
+
+		for (TreeNode node : nodes) {
+			if (node.isExpanded())
+				expandedNodes.add(node);
+		}
+		return expandedNodes;
 	}
 
 	private boolean isNodeSelected(CategoriesTreeBean tree) {
@@ -147,6 +186,15 @@ public class CategoriesPageBean {
 
 		return path;
 
+	}
+
+	public void expandAction(CategoryDto category) {
+		expandNode(category);
+	}
+
+	public void addMessage(String summary) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
 	public void onNodeExpand(NodeExpandEvent event) {
