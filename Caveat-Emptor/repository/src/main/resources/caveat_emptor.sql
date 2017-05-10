@@ -114,3 +114,36 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2017-04-24 14:51:19
+
+--
+-- Table structure for table `item`
+--
+
+DROP TABLE IF EXISTS `item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `category_id` varchar(45) NOT NULL,
+  `initial_price` int(11) NOT NULL,
+  `opening_date` timestamp(6) NULL DEFAULT NULL,
+  `closing_date` varchar(45) DEFAULT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `winner_id` varchar(45) DEFAULT NULL,
+  `user_id` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `item`
+--
+
+LOCK TABLES `item` WRITE;
+/*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (1,'item1','desc item 1','1',12,'2017-05-09 10:01:11.000000','2017-05-09 13:01:11','1','1','1'),(3,'333','w3w3','1',1,'2017-05-09 10:23:12.000000','2017-05-09 13:23:12','23','2','2');
+/*!40000 ALTER TABLE `item` ENABLE KEYS */;
+UNLOCK TABLES;
