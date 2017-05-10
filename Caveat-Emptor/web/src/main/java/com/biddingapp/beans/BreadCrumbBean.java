@@ -17,11 +17,12 @@ public class BreadCrumbBean {
 
 	private MenuModel model;
 
-	public BreadCrumbBean() {
+	@PostConstruct
+	public void init() {
 		createMenu();	
 	}
 	
-	@PostConstruct
+	
 	private void createMenu() {
 		
 		model = new DefaultMenuModel();

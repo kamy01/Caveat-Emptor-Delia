@@ -2,16 +2,19 @@ package services.util;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import entities.Category;
+import entities.Item;
 import entities.User;
 import entities.UserAddress;
 import entities.UserRegistration;
 import model.AddressDto;
 import model.CategoryDto;
+import model.ItemDto;
 import model.RegistrationDto;
 import model.UserDto;
 
@@ -62,15 +65,14 @@ public class Utils {
 
 		Category category = new Category();
 		try {
-		category.setId(categoryDto.getId()); }
-		catch (Exception e)
-		{
+			category.setId(categoryDto.getId());
+		} catch (Exception e) {
 			System.out.println(e);
 		}
 		category.setName(categoryDto.getName());
 		category.setDescription(categoryDto.getDescription());
 		category.setParentId(categoryDto.getParentId());
-		
+
 		return category;
 	}
 
@@ -140,6 +142,35 @@ public class Utils {
 		}
 
 		return categories;
+	}
+
+	public static List<ItemDto> getItemFromEntity(List<Item> entities) {
+		
+		List<ItemDto> items = new ArrayList<ItemDto>();
+		for (Item entity : entities) {
+			items.add(getItemFromEntity(entity));
+		}
+
+		return items;
+
+	}
+
+	private static ItemDto getItemFromEntity(Item entity) {
+
+		ItemDto item = new ItemDto();
+
+		item.setId(entity.getId());
+		item.setCategoryId(entity.getCategoryId());
+		item.setUserId(entity.getUserId());
+		item.setName(entity.getName());
+		item.setDescription(entity.getDescription());
+		item.setInitialPrice(entity.getInitialPrice());
+		item.setOpeningDate(entity.getOpeningDate());
+		item.setClosingDate(entity.getClosingDate());
+		item.setStatus(entity.getStatus());
+		item.setWinner(entity.getWinner());
+
+		return item;
 	}
 
 }

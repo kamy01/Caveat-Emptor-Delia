@@ -12,7 +12,7 @@
 			selectionMode="single" selection="#{treeBasicView.selectedNode}"
 			id="tree">
 			<p:ajax event="select" listener="#{categoriesPageBean.onNodeSelect}"
-			update="content-form:tabView" />
+			update="content-form:tabView:categories-page-panel" />
 			<p:ajax event="expand" listener="#{treeBasicView.onNodeExpand}" />
 			<p:ajax event="collapse" listener="#{treeBasicView.onNodeCollapse}" />
 			<p:ajax event="unselect" listener="#{treeBasicView.onNodeUnselect}" />

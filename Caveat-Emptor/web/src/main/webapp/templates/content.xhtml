@@ -18,13 +18,13 @@
 			</div>
 			<div id="content-page">
 				<p:tabView orientation="top" id="tabView">
-					<p:tab title="Bidding" id="categories">
+					<p:tab title="Bidding">
+					</p:tab>
+					<p:tab title="Items" id="items">
+						<ui:include src="items.xhtml" />
+					</p:tab>
+					<p:tab title="Categories" id="categories">
 						<ui:include src="categoriesPage.xhtml" />
-					</p:tab>
-					<p:tab title="Items">
-						<h:outputText value="Francis Ford Coppola's ..." />
-					</p:tab>
-					<p:tab title="Categories">
 					</p:tab>
 					<p:tab title="Users">
 						<h:outputText value="After a break of more than 15 years..." />

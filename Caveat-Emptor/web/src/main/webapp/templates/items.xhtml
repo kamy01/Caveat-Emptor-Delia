@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+	<div id="items-page">
+
+		<p:growl id="msgs" showDetail="true" />
+		<div id="items-dropdown">
+			<p:outputLabel for="itemPurpose" value="Items to: " />
+			<p:selectOneMenu id="itemPurpose" value="#{itemsDropdown.itemType}"
+				style="width:150px">
+				<p:ajax listener="#{itemsDropdown.onItemTypeChange}" update="msgs" />
+
+				<f:selectItem itemLabel="Select type" itemValue=""
+					noSelectionOption="true" />
+				<f:selectItems value="#{itemsDropdown.itemTypes}" />
+			</p:selectOneMenu>
+		</div>
+
+		<div id="items-table-content">
+			<h:form id="items-content">
+				<p:dataTable id="items-table" styleClass="order-table"
+					value="#{itemBean.getItemList()}" var="it"
+					headerClass="order-table-header" editable="true"
+					rowClasses="order-table-odd-row,order-table-even-row">
+					<p:column class="column-tab" headerText="Name" sortBy="#{it.name}">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{it.name}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="modelInput" value="#{it.name}"
+									style="width:100%" />
+							</f:facet>
+							</p:cellEditor>
+					</p:column>
+					<p:column class="column-tab" headerText="Category"
+						sortBy="#{it.categoryId}">
+						<h:outputText value="#{it.categoryId}" />
+					</p:column>
+					<p:column class="column-tab" headerText="Initial price"
+						sortBy="#{it.initialPrice}">
+						<h:outputText value="#{it.initialPrice}" />
+					</p:column>
+					<p:column class="column-tab" headerText="Best bid">
+						best bid
+					</p:column>
+					<p:column class="column-tab" headerText="Your bid">
+					my bid
+					</p:column>
+					<p:column class="column-tab" headerText="#bids">
+					100
+					</p:column>
+					<p:column class="column-tab" headerText="Opening date"
+						sortBy="#{it.openingDate}">
+						<h:outputText value="#{it.openingDate}" />
+					</p:column>
+					<p:column class="column-tab" headerText="Closing date"
+						sortBy="#{it.closingDate}">
+						<h:outputText value="#{it.closingDate}" />
+					</p:column>
+					<p:column class="column-tab" headerText="Status"
+						sortBy="#{it.status}">
+						<h:outputText value="#{it.status}" />
+					</p:column>
+					<p:column class="column-tab" headerText="Winner"
+						sortBy="#{it.winner}">
+						<h:outputText value="Delia" />
+					</p:column>
+					<p:column>
+						<p:rowEditor />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

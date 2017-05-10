@@ -23,10 +23,10 @@
 								listener="#{categoriesPageBean.searchForCategory}"
 								update="content-form:tabView:categories-page-panel" process="@form"></p:ajax>
 
-						</p:inputText> <p:commandButton value="Create new"
+						</p:inputText> <p:commandButton value="Create new" id="create-new"
 							style="left:30%;position:relative;">
 							<p:ajax listener="#{categoriesPageBean.reset}"
-								update="content-form:tabView" />
+								update="@form" />
 						</p:commandButton>
 					</span> <br></br>
 				</div>
@@ -43,11 +43,11 @@
 								cellpadding="5">
 								<h:outputLabel for="name" value="Name" />
 								<p:inputTextarea id="name" rows="1" cols="70"
-									value="#{categoriesPageBean.category.name}" />
+									value="#{categoriesPageBean.category.name}"  requested="true"/>
 
 								<p:outputLabel for="description" value="Description:" />
 								<p:inputTextarea id="description" rows="10" cols="70"
-									value="#{categoriesPageBean.category.description}" />
+									value="#{categoriesPageBean.category.description}" requested="true"/>
 							</h:panelGrid>
 						</p:panel>
 
@@ -55,12 +55,12 @@
 						<br></br>
 
 						<p:commandButton id="saveCategoryButton"
-							style="left:20%;position:relative;" value="Save" update="panel">
+							style="left:10%;position:relative;width:10% !important;" value="Save" update="panel">
 							<p:ajax listener="#{categoriesPageBean.save}" process="@form"
 								update="content-form:tree"></p:ajax>
 						</p:commandButton>
 						<p:commandButton id="removeCategoryButton"
-							style="left:35%;position:relative;" value="Remove" class="space"
+							style="left:35%;position:relative;width:10% !important;" value="Remove" class="space"
 							update="panel">
 							<p:ajax listener="#{categoriesPageBean.remove}" process="@form"
 								update="content-form:tree" />

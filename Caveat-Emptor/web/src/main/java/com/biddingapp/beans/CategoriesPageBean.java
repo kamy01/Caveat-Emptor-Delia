@@ -224,7 +224,6 @@ public class CategoriesPageBean {
 	public void reset() {
 
 		category = new CategoryDto();
-		treeBean.getSelectedNode().setSelected(false);
 	}
 
 	public BreadCrumbBean getBreadCrumb() {
