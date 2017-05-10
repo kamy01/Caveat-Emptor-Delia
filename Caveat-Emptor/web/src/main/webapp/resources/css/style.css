@@ -40,10 +40,12 @@ ui-selectonemenu-item, .ui-selectonemenu-list-item, .ui-noselection-option, .ui-
 	position: absolute;
 }
 
-.categories-page-panel {
+#categories-div {
 	position: absolute;
-	width: 95%;
+	width: 90%;
 	height: 95%;
+	margin-left: 20%;
+	margin-top: -4%;
 }
 
 #header {
@@ -58,6 +60,11 @@ h1, h2, h3, h4, h5, h6, a {
 	padding: 0;
 }
 
+#category-form, #categories-div {
+
+	
+}
+
 .login {
 	margin: 0 auto;
 	max-width: 500px;
@@ -68,14 +75,20 @@ h1, h2, h3, h4, h5, h6, a {
 .menu-tree {
 	height: 83.4%;
 	position: absolute;
-	width: 19.85%;
-	top: 6%;
+	width: 15%;
+	top: 59%;
+	left: 3%;
 	bottom: 8%;
-	border: 1px solid grey;
+	background: inherit;
 }
 
 .ui-tree, .ui-widgetm, .ui-widget-content, .ui-corner-all {
 	border-style: none !important;
+	
+}
+
+.ui-panel {
+margin-right: 10%;
 }
 
 #removeCategoryButton, #saveCategoryButton {
@@ -92,7 +105,7 @@ h1, h2, h3, h4, h5, h6, a {
 }
 
 .ui-tabs-top {
-	top: -8.5% !important;
+	top: -6.9% !important;
 	background: inherit !important;
 }
 
@@ -118,8 +131,8 @@ h1, h2, h3, h4, h5, h6, a {
 
 #header-img {
 	position: absolute;
-	left: 1%;
-	top: 30%;
+	left: 5%;
+	top: 50%;
 }
 
 /* items */
@@ -148,21 +161,26 @@ h1, h2, h3, h4, h5, h6, a {
 
 #content-div {
 	position: absolute;
-	width: 100%;
-	height: 83.4%;
+	width: 95%;
+	height: 80%;
 	left: 0;
 	top: 8%;
 	right: 1%;
 }
 
+#categories-panel
+{
+	margin-right: 10% !important;
+}
+
 #content-page {
 	position: absolute;
-	width: 70%;
-	height: 83%;
-	left: 25%;
-	top: 6%;
-	border: 1px solid grey;
+	width: 95%;
+	height: 95%;
+	left: 5%;
+	top: 5%;
 	right: 5%;
+	border: 1px solid grey;
 }
 
 #search-popup {
@@ -170,7 +188,7 @@ h1, h2, h3, h4, h5, h6, a {
 	width: inherit;
 	height: inherit;
 	left: 5%;
-	top: 60%;
+	top: 50%;
 }
 
 #breadcrump-div {

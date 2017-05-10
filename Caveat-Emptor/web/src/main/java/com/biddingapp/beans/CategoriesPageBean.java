@@ -19,7 +19,7 @@ import org.primefaces.model.TreeNode;
 
 import model.CategoryDto;
 import services.category.CategoryService;
-import utils.ConstantsEnum;
+import utils.constants.EnumCategories;
 import utils.exceptions.CategoryException;
 
 @ManagedBean(name = "categoriesPageBean")
@@ -42,13 +42,14 @@ public class CategoriesPageBean {
 	public void init() {
 
 		category = new CategoryDto();
+		treeBean.init();
 	}
 
 	public void save() {
 
-		FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN, ConstantsEnum.LOGIN_ERROR.getConstant(),
-				ConstantsEnum.INVALID_CREDENTIALS.getConstant()),
-				success = new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantsEnum.WELCOME.getConstant(),
+		FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN,
+				EnumCategories.CATEGRY_ERROR_TITLE.getConstant(), EnumCategories.ERROR_CATEGORY_INSERT.getConstant()),
+				success = new FacesMessage(FacesMessage.SEVERITY_INFO, EnumCategories.CATEGORY_ADDED.getConstant(),
 						category.getName());
 
 		try {
@@ -59,9 +60,13 @@ public class CategoriesPageBean {
 				FacesContext.getCurrentInstance().addMessage(null, success);
 			} catch (NullPointerException e) {
 
-				CategoryDto parent = (CategoryDto) treeBean.getSelectedNode().getData();
+				try {
+					CategoryDto parent = (CategoryDto) treeBean.getSelectedNode().getData();
+					category.setParentId(parent.getId());
+				} catch (NullPointerException n) {
+					category.setParentId(0L);
+				}
 
-				category.setParentId(parent.getId());
 				service.insertNewCategory(category);
 			}
 
@@ -71,6 +76,7 @@ public class CategoriesPageBean {
 		}
 
 		treeBean.init();
+		expandNode(category);
 	}
 
 	public void remove() {
@@ -79,8 +85,9 @@ public class CategoriesPageBean {
 		try {
 			service.removeCategory(category);
 		} catch (CategoryException e) {
-			FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN, ConstantsEnum.LOGIN_ERROR.getConstant(),
-					ConstantsEnum.INVALID_CREDENTIALS.getConstant());
+			FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					EnumCategories.CATEGRY_ERROR_TITLE.getConstant(),
+					EnumCategories.ERROR_CATEGORY_REMOVE.getConstant());
 			FacesContext.getCurrentInstance().addMessage(null, error);
 		}
 		treeBean.init();
@@ -93,19 +100,23 @@ public class CategoriesPageBean {
 			RequestContext context = RequestContext.getCurrentInstance();
 			context.execute("PF('dlg1').show();");
 
-			searchResults = new ArrayList<>();
-
-			List<CategoryDto> categories = treeBean.getCategories();
-
-			for (CategoryDto category : categories) {
-
-				if (category.getName().toLowerCase().contains(searchValue.toLowerCase())) {
-
-					searchResults.add(category);
-				}
-			}
-
+			searchForNode();
 			searchValue = null;
+		}
+	}
+
+	private void searchForNode() {
+
+		searchResults = new ArrayList<>();
+
+		List<CategoryDto> categories = treeBean.getCategories();
+
+		for (CategoryDto category : categories) {
+
+			if (category.getName().toLowerCase().contains(searchValue.toLowerCase())) {
+
+				searchResults.add(category);
+			}
 		}
 	}
 
@@ -122,11 +133,13 @@ public class CategoriesPageBean {
 	}
 
 	private void updateBreadCrumbForSelectedCategory(CategoryDto category) {
+
 		List<String> path = getPath(category);
 		breadCrumb.updateBreadCrumb(path);
 	}
 
 	private void expandParent(TreeNode child) {
+
 		if (child.getParent() != null) {
 			child.getParent().setExpanded(true);
 			expandParent(child.getParent());
@@ -134,29 +147,37 @@ public class CategoriesPageBean {
 	}
 
 	private void expandNode(CategoryDto category) {
-		List<TreeNode> nodes = treeBean.getChildrenList(treeBean.getRoot());
+		List<TreeNode> nodes = treeBean.getAllChildren(treeBean.getRoot());
 
 		for (TreeNode node : nodes) {
 			if (((CategoryDto) node.getData()).getName().toLowerCase().equals(category.getName().toLowerCase())) {
-				node.setSelected(true);
-				treeBean.setSelectedNode(node);
-				updateBreadCrumbForSelectedCategory((CategoryDto) node.getData());
-				expandParent(node);
+
+				unselectAllNodes();
+				selectNode(node);
 				break;
 			}
 		}
 	}
 
-	@SuppressWarnings("unused")
-	private List<TreeNode> getExpandedNodes(CategoriesTreeBean tree) {
-		List<TreeNode> nodes = tree.getChildrenList(tree.getRoot());
-		List<TreeNode> expandedNodes = new ArrayList<TreeNode>();
+	private void unselectAllNodes() {
 
-		for (TreeNode node : nodes) {
-			if (node.isExpanded())
-				expandedNodes.add(node);
+		List<TreeNode> allNodes = treeBean.getAllChildren(treeBean.getRoot());
+		for(TreeNode node: allNodes)
+		{
+			if(node.isSelected())
+			{
+				node.setSelected(false);
+			}
 		}
-		return expandedNodes;
+		
+	}
+
+	private void selectNode(TreeNode node) {
+		treeBean.setSelectedNode(node);
+		updateBreadCrumbForSelectedCategory((CategoryDto) node.getData());
+		expandParent(node);
+		node.setSelected(true);
+		node.setExpanded(false);
 	}
 
 	private boolean isNodeSelected(CategoriesTreeBean tree) {

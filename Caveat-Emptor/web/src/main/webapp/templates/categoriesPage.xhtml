@@ -8,6 +8,13 @@
 	<title>Insert title here</title>
 </h:head>
 <h:body>
+
+	<div>
+		<ui:insert name="tree">
+			<ui:include src="../templates/tree.xhtml" />
+		</ui:insert>
+	</div>
+
 	<h:panelGroup id="categories-page-panel">
 		<div id="categories-div">
 			<h:form id="category-form">
@@ -21,12 +28,12 @@
 
 							<p:ajax event="change"
 								listener="#{categoriesPageBean.searchForCategory}"
-								update="content-form:tabView:categories-page-panel" process="@form"></p:ajax>
+								update="content-form:tabView:categories-page-panel"
+								process="@form"></p:ajax>
 
 						</p:inputText> <p:commandButton value="Create new" id="create-new"
 							style="left:30%;position:relative;">
-							<p:ajax listener="#{categoriesPageBean.reset}"
-								update="@form" />
+							<p:ajax listener="#{categoriesPageBean.reset}" update="content-form:tabView:categories-page-panel" />
 						</p:commandButton>
 					</span> <br></br>
 				</div>
@@ -38,16 +45,17 @@
 				</div>
 				<div id="categories-destails-div">
 					<h:form id="categories-form">
-						<p:panel id="panel" style="margin-top:10; margin-left:5px;">
+						<p:panel id="categories-panel" style="margin-top:10; margin-left:5px;">
 							<h:panelGrid id="categories-details-grid" columns="2"
 								cellpadding="5">
 								<h:outputLabel for="name" value="Name" />
 								<p:inputTextarea id="name" rows="1" cols="70"
-									value="#{categoriesPageBean.category.name}"  requested="true"/>
+									value="#{categoriesPageBean.category.name}" requested="true" />
 
 								<p:outputLabel for="description" value="Description:" />
 								<p:inputTextarea id="description" rows="10" cols="70"
-									value="#{categoriesPageBean.category.description}" requested="true"/>
+									value="#{categoriesPageBean.category.description}"
+									requested="true" />
 							</h:panelGrid>
 						</p:panel>
 
@@ -55,39 +63,41 @@
 						<br></br>
 
 						<p:commandButton id="saveCategoryButton"
-							style="left:10%;position:relative;width:10% !important;" value="Save" update="panel">
+							style="left:10%;position:relative;width:10% !important;"
+							value="Save">
 							<p:ajax listener="#{categoriesPageBean.save}" process="@form"
-								update="content-form:tree"></p:ajax>
+								update=":content-form:tabView:tree :content-form:tabView:category-form" ></p:ajax>
 						</p:commandButton>
 						<p:commandButton id="removeCategoryButton"
-							style="left:35%;position:relative;width:10% !important;" value="Remove" class="space"
-							update="panel">
+							style="left:35%;position:relative;width:10% !important;"
+							value="Remove" class="space">
 							<p:ajax listener="#{categoriesPageBean.remove}" process="@form"
-								update="content-form:tree" />
+								update=":content-form:tabView:tree :content-form:tabView:category-form"  />
 						</p:commandButton>
 					</h:form>
 				</div>
 			</h:form>
 		</div>
 		<p:tab id="search-tab">
-			<p:dialog header="Search Results" widgetVar="dlg1" minHeight="40" modal="true" showEffect="fade" hideEffect="fade"
-				id="dialog">
-				
+			<p:dialog header="Search Results" widgetVar="dlg1" minHeight="40"
+				modal="true" showEffect="fade" hideEffect="fade" id="dialog">
+
 				<h:panelGroup id="dialog-content">
-				<ui:repeat value="#{categoriesPageBean.searchResults}" var="item">
-					<p:commandLink value="#{item.name}" >
-						<p:ajax  update=":content-form:tree :content-form:tabView"
-						onsuccess="PF('dlg1').hide();"
-						listener="#{categoriesPageBean.expandAction(item)}" process="@this" />
+					<ui:repeat value="#{categoriesPageBean.searchResults}" var="item">
+						<p:commandLink value="#{item.name}">
+							<p:ajax update=":content-form:tabView:tree"
+								onsuccess="PF('dlg1').hide();"
+								listener="#{categoriesPageBean.expandAction(item)}"
+								process="@this" />
 						</p:commandLink>
-					<h:panelGrid columns="1">
-						<h:outputText value="#{item.getDescription()}" />
-					</h:panelGrid>
-				</ui:repeat>
-			</h:panelGroup>
-				
-				
-			
+						<h:panelGrid columns="1">
+							<h:outputText value="#{item.getDescription()}" />
+						</h:panelGrid>
+					</ui:repeat>
+				</h:panelGroup>
+
+
+
 			</p:dialog>
 		</p:tab>
 	</h:panelGroup>

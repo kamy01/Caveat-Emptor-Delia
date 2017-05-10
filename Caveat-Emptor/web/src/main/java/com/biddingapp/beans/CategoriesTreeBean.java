@@ -109,7 +109,7 @@ public class CategoriesTreeBean implements Serializable {
 	public void onNodeUnselect(NodeUnselectEvent event) {
 	}
 
-	public List<TreeNode> getChildrenList(TreeNode parent) {
+	public List<TreeNode> getAllChildren(TreeNode parent) {
 		
 		List<TreeNode> children = new ArrayList<TreeNode>();
 		List<TreeNode> totalNodes = new ArrayList<TreeNode>();
@@ -123,7 +123,7 @@ public class CategoriesTreeBean implements Serializable {
 
 			for (TreeNode child : children) {
 				if (child.getChildCount() > 0) {
-					totalNodes.addAll(getChildrenList(child));
+					totalNodes.addAll(getAllChildren(child));
 				}
 			}
 		}
@@ -137,7 +137,7 @@ public class CategoriesTreeBean implements Serializable {
 		
 		List<TreeNode> nodes = new ArrayList<>();
 
-		nodes.addAll(getChildrenList(root));
+		nodes.addAll(getAllChildren(root));
 
 		List<CategoryDto> categories = new ArrayList<CategoryDto>();
 
