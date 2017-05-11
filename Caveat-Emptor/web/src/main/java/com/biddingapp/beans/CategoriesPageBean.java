@@ -81,16 +81,18 @@ public class CategoriesPageBean {
 
 	public void remove() {
 
-		CategoryDto category = (CategoryDto) treeBean.getSelectedNode().getData();
+		CategoryDto categoryToDelete = (CategoryDto) treeBean.getSelectedNode().getData();
 		try {
-			service.removeCategory(category);
+			service.removeCategory(categoryToDelete);
 		} catch (CategoryException e) {
 			FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_WARN,
 					EnumCategories.CATEGRY_ERROR_TITLE.getConstant(),
 					EnumCategories.ERROR_CATEGORY_REMOVE.getConstant());
 			FacesContext.getCurrentInstance().addMessage(null, error);
 		}
+		category = new CategoryDto();
 		treeBean.init();
+		breadCrumb.init();
 	}
 
 	public void searchForCategory(AjaxBehaviorEvent e) {

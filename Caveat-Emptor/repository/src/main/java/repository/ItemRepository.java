@@ -8,5 +8,5 @@ import utils.exceptions.ItemException;
 public interface ItemRepository {
 	
 	public List<Item> getAllItems() throws ItemException;
-
+	
 }

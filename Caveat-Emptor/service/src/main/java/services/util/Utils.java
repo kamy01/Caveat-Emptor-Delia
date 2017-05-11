@@ -7,12 +7,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import entities.Bid;
 import entities.Category;
 import entities.Item;
 import entities.User;
 import entities.UserAddress;
 import entities.UserRegistration;
 import model.AddressDto;
+import model.BidDto;
 import model.CategoryDto;
 import model.ItemDto;
 import model.RegistrationDto;
@@ -160,8 +162,8 @@ public class Utils {
 		ItemDto item = new ItemDto();
 
 		item.setId(entity.getId());
-		item.setCategoryId(entity.getCategoryId());
-		item.setUserId(entity.getUserId());
+		item.setCategory(Utils.getCategoryFromEntity(entity.getCategory()));
+		item.setOwner(Utils.getUserFromEntity(entity.getOwner()));
 		item.setName(entity.getName());
 		item.setDescription(entity.getDescription());
 		item.setInitialPrice(entity.getInitialPrice());
@@ -171,6 +173,67 @@ public class Utils {
 		item.setWinner(entity.getWinner());
 
 		return item;
+	}
+
+	private static Item getItemFromDto(ItemDto item) {
+
+		Item entity = new Item();
+
+		entity.setId(item.getId());
+		entity.setCategory(Utils.getCategoryFromDto(item.getCategory()));
+		entity.setOwner(Utils.getUserFromDto(item.getOwner()));
+		entity.setName(item.getName());
+		entity.setDescription(item.getDescription());
+		entity.setInitialPrice(item.getInitialPrice());
+		entity.setOpeningDate(item.getOpeningDate());
+		entity.setClosingDate(item.getClosingDate());
+		entity.setStatus(item.getStatus());
+		entity.setWinner(item.getWinner());
+
+		return entity;
+	}
+	
+	public static List<BidDto> getBidsFromEntity(List<Bid> entities) {
+		
+		List<BidDto> bid = new ArrayList<BidDto>();
+		
+		for(Bid entity: entities)
+		{
+			bid.add(getBidFromEntity(entity));
+		}
+		
+		return bid;
+		
+	}
+	
+	private static Bid getBidFromDto(BidDto bid) {
+
+		Bid entity = new Bid();
+		try {
+		bid.setId(entity.getId());
+		} catch (Exception e){};
+		
+		entity.setItem(getItemFromDto(bid.getItem()));
+		entity.setPrice(bid.getPrice());
+		entity.setUser(getUserFromDto(bid.getUser()));
+		entity.setValid(bid.getValid());
+		
+		return entity;
+	}
+
+	private static BidDto getBidFromEntity(Bid entity) {
+
+		BidDto bid = new BidDto();
+		try {
+		bid.setId(entity.getId());
+		} catch (Exception e){};
+		
+		bid.setItem(getItemFromEntity(entity.getItem()));
+		bid.setPrice(entity.getPrice());
+		bid.setUser(getUserFromEntity(entity.getUser()));
+		bid.setValid(entity.getValid());
+		
+		return bid;
 	}
 
 }

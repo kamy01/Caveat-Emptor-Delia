@@ -3,17 +3,17 @@ package com.biddingapp.beans;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import model.UserDto;
 import services.login.LoginService;
-import utils.constants.EnumLogin;
 import utils.UserStateEnum;
+import utils.constants.EnumLogin;
 import utils.exceptions.UserException;
 
 @ManagedBean(name = "userLogin")
-@ViewScoped
+@SessionScoped
 public class UserLoginBean {
 
 	private String username;

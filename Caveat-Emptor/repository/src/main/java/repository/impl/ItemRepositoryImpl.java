@@ -12,7 +12,6 @@ import javax.persistence.Query;
 import entities.Item;
 import repository.ItemRepository;
 import utils.exceptions.ItemException;
-import utils.exceptions.UserException;
 
 @Stateless
 @Remote(ItemRepository.class)

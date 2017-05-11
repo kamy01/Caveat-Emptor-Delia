@@ -11,10 +11,8 @@ import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
 
 import entities.Category;
-import model.CategoryDto;
 import repository.CategoryRepository;
 import utils.exceptions.CategoryException;
-import utils.exceptions.UserException;
 
 @Stateless
 @Remote(CategoryRepository.class)

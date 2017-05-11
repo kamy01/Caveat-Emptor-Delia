@@ -8,8 +8,8 @@ public class ItemDto implements Serializable {
 	private static final long serialVersionUID = 5830382014860046401L;
 
 	private long id;
-	private long userId;
-	private long categoryId;
+	private UserDto owner;
+	private CategoryDto category;
 	private String name;
 	private String description;
 	private long initialPrice;
@@ -30,20 +30,12 @@ public class ItemDto implements Serializable {
 		this.id = id;
 	}
 
-	public long getUserId() {
-		return userId;
+	public UserDto getOwner() {
+		return owner;
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
-	public long getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(long categoryId) {
-		this.categoryId = categoryId;
+	public void setOwner(UserDto owner) {
+		this.owner = owner;
 	}
 
 	public String getName() {
@@ -100,5 +92,13 @@ public class ItemDto implements Serializable {
 
 	public void setWinner(long winner) {
 		this.winner = winner;
+	}
+
+	public CategoryDto getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryDto category) {
+		this.category = category;
 	}
 }

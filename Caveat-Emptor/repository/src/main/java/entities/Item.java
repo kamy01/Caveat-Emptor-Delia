@@ -3,18 +3,21 @@ package entities;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 
 @Entity
 @NamedQueries({ @NamedQuery(name = "Item.findByName", query = "SELECT it FROM Item it WHERE it.name  = :name"),
-		@NamedQuery(name = "Item.findByCategoryId", query = "SELECT it FROM Item it WHERE it.categoryId  = :id"),
-		@NamedQuery(name = "Item.findByUserId", query = "SELECT it FROM Item it WHERE it.userId  = :id"),
+		@NamedQuery(name = "Item.findByCategoryId", query = "SELECT it FROM Item it, Category c WHERE c.id  = :id"),
+		@NamedQuery(name = "Item.findByUserId", query = "SELECT it FROM Item it, User u WHERE u.id  = :id"),
 		@NamedQuery(name = "Item.findById", query = "SELECT it FROM User it WHERE it.id  = :id"), 
 		@NamedQuery(name = "Item.getAllItems", query = "SELECT it FROM Item it"),})
 public class Item implements Serializable {
@@ -31,11 +34,13 @@ public class Item implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(length = 45, name = "user_id")
-	private long userId;
+	@OneToOne(cascade = {CascadeType.REFRESH})
+	@JoinColumn(name = "owner_id_fk")
+	private User owner;
 
-	@Column(length = 45, name = "category_id")
-	private long categoryId;
+	@OneToOne(cascade = {CascadeType.REFRESH})
+	@JoinColumn(name = "category_id_fk")
+	private Category category;
 
 	@Column(length = 45)
 	private String name;
@@ -69,20 +74,20 @@ public class Item implements Serializable {
 		this.id = id;
 	}
 
-	public long getUserId() {
-		return userId;
+	public User getOwner() {
+		return owner;
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 
-	public long getCategoryId() {
-		return categoryId;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setCategoryId(long categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public String getName() {
