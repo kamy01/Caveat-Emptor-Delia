@@ -16,8 +16,8 @@ import javax.persistence.Table;
 		@NamedQuery(name = "UserAddress.findAddressByUserId", query = "SELECT a FROM UserAddress a, User U WHERE U.id  = :name"), })
 public class UserAddress implements Serializable {
 
-	public static final String FIND_ADDRESS_BY_USERID = "UserAddress.findAddressByUserId";
 	private static final long serialVersionUID = -5433825894257764358L;
+	public static final String FIND_ADDRESS_BY_USERID = "UserAddress.findAddressByUserId";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

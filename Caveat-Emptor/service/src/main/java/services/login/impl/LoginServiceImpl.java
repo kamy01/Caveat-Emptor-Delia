@@ -8,7 +8,7 @@ import entities.User;
 import model.UserDto;
 import repository.UserRepository;
 import services.login.LoginService;
-import services.util.Utils;
+import services.util.EntityDtoMapper;
 import utils.exceptions.UserException;
 
 @Stateless
@@ -22,7 +22,7 @@ public class LoginServiceImpl implements LoginService {
 	public UserDto getUser(String username) throws UserException {
 
 		User userEntity = repository.getUserByName(username);
-		UserDto userDto = Utils.getUserFromEntity(userEntity);
+		UserDto userDto = EntityDtoMapper.getUserFromEntity(userEntity);
 
 		return userDto;
 	}

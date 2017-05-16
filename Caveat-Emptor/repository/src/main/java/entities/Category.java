@@ -18,12 +18,11 @@ import javax.persistence.NamedQuery;
 	@NamedQuery(name = "Category.findByName", query = "SELECT cat FROM Category cat where cat.name = :name"),})
 public class Category implements Serializable {
 
+	private static final long serialVersionUID = 9420454433615720L;
 	public static final String FIND_CATEGORY_BY_ID = "Category.findById";
 	public static final String FIND_CATEGORY_BY_NAME = "Category.findByName";
 	public static final String GET_CHILDREN_OF_CATEGORY = "Category.getChildren";
 	public static final String GET_ALL_CATEGORIES = "Category.getAllCategories";
-		
-	private static final long serialVersionUID = 4349755949203026333L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,11 +49,11 @@ public class Category implements Serializable {
 		super();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

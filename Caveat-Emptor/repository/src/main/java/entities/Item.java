@@ -17,22 +17,21 @@ import javax.persistence.OneToOne;
 @Entity
 @NamedQueries({ @NamedQuery(name = "Item.findByName", query = "SELECT it FROM Item it WHERE it.name  = :name"),
 		@NamedQuery(name = "Item.findByCategoryId", query = "SELECT it FROM Item it, Category c WHERE c.id  = :id"),
-		@NamedQuery(name = "Item.findByUserId", query = "SELECT it FROM Item it, User u WHERE u.id  = :id"),
+		@NamedQuery(name = "Item.getItemsForUser", query = "SELECT it from Item it where it.owner.id  = :id"),
 		@NamedQuery(name = "Item.findById", query = "SELECT it FROM User it WHERE it.id  = :id"), 
 		@NamedQuery(name = "Item.getAllItems", query = "SELECT it FROM Item it"),})
 public class Item implements Serializable {
 
+	private static final long serialVersionUID = -8470034525611044083L;
 	public static final String FIND_ITEM_BY_NAME = "Item.findByName";
 	public static final String FIND_ITEM_BY_CATEGORY_ID = "Item.findByCategoryId";
 	public static final String FIND_ITEM_BY_CATEGORY_NAME = "Item.findByCategoryName";
-	public static final String FIND_ITEM_BY_USER_ID = "Item.findByUserId";
+	public static final String GET_ITEMS_FOR_USER = "Item.getItemsForUser";
 	public static final String GET_ALL_ITEMS = "Item.getAllItems";
-
-	private static final long serialVersionUID = 9047647663339787977L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@OneToOne(cascade = {CascadeType.REFRESH})
 	@JoinColumn(name = "owner_id_fk")
@@ -49,7 +48,7 @@ public class Item implements Serializable {
 	private String description;
 
 	@Column(name = "initial_price")
-	private long initialPrice;
+	private Long initialPrice;
 
 	@Column(name = "opening_date")
 	private Timestamp openingDate;
@@ -60,17 +59,18 @@ public class Item implements Serializable {
 	@Column(length = 10)
 	private String status;
 
-	@Column(length = 45, name = "winner_id")
-	private long winner;
+	@OneToOne(cascade = {CascadeType.REFRESH})
+	@JoinColumn(name = "winner_id_fk")
+	private User winner;
 
 	public Item() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -106,16 +106,16 @@ public class Item implements Serializable {
 		this.description = description;
 	}
 
-	public long getInitialPrice() {
+	public Long getInitialPrice() {
 		return initialPrice;
 	}
 
-	public void setInitialPrice(long initialPrice) {
+	public void setInitialPrice(Long initialPrice) {
 		this.initialPrice = initialPrice;
 	}
 
 	public Timestamp getOpeningDate() {
-		return openingDate;
+		return (Timestamp) openingDate.clone();
 	}
 
 	public void setOpeningDate(Timestamp openingDate) {
@@ -123,7 +123,7 @@ public class Item implements Serializable {
 	}
 
 	public Timestamp getClosingDate() {
-		return closingDate;
+		return (Timestamp) closingDate.clone();
 	}
 
 	public void setClosingDate(Timestamp closingDate) {
@@ -138,11 +138,18 @@ public class Item implements Serializable {
 		this.status = status;
 	}
 
-	public long getWinner() {
+	public User getWinner() {
 		return winner;
 	}
 
-	public void setWinner(long winner) {
+	public void setWinner(User winner) {
 		this.winner = winner;
+	}
+	
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", owner=" + owner + ", category=" + category + ", name=" + name + ", description="
+				+ description + ", initialPrice=" + initialPrice + ", openingDate=" + openingDate + ", closingDate="
+				+ closingDate + ", status=" + status + ", winner=" + winner.toString() + "]";
 	}
 }

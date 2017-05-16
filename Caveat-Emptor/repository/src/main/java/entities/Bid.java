@@ -17,8 +17,7 @@ import javax.persistence.OneToOne;
 @NamedQueries({ @NamedQuery(name = "Bid.getAllBids", query = "SELECT b FROM Bid b")})
 public class Bid implements Serializable {
 
-	private static final long serialVersionUID = 4226885009881389480L;
-
+	private static final long serialVersionUID = 4139602802551466322L;
 	public static final String FIND_ITEM_BY_NAME = "Item.findByName";
 	public static final String FIND_ITEM_BY_CATEGORY_ID = "Item.findByCategoryId";
 	public static final String FIND_ITEM_BY_CATEGORY_NAME = "Item.findByCategoryName";
@@ -27,7 +26,7 @@ public class Bid implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@OneToOne(cascade = {CascadeType.REFRESH})
 	@JoinColumn(name = "item_id_fk")
@@ -47,11 +46,11 @@ public class Bid implements Serializable {
 		super();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

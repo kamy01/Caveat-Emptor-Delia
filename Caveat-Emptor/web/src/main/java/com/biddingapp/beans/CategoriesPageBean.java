@@ -29,6 +29,7 @@ public class CategoriesPageBean {
 	private String searchValue;
 	private List<CategoryDto> searchResults;
 	private CategoryDto category;
+	
 	@EJB
 	CategoryService service;
 
@@ -72,7 +73,6 @@ public class CategoriesPageBean {
 
 		} catch (CategoryException e) {
 			FacesContext.getCurrentInstance().addMessage(null, error);
-
 		}
 
 		treeBean.init();

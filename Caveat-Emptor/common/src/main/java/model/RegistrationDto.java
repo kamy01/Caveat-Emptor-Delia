@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class RegistrationDto implements Serializable {
 
-	private static final long serialVersionUID = 4071270365690194389L;
+	private static final long serialVersionUID = -4572080226879541688L;
 	private Long id;
 	private UserDto user;
 	private Date expirationDate;
@@ -27,7 +27,7 @@ public class RegistrationDto implements Serializable {
 		this.id = id;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

@@ -10,7 +10,7 @@ import entities.Bid;
 import model.BidDto;
 import repository.BidRepository;
 import services.bidding.BidService;
-import services.util.Utils;
+import services.util.EntityDtoMapper;
 import utils.exceptions.BidException;
 
 @Stateless
@@ -23,7 +23,7 @@ public class BidServiceImpl implements BidService {
 	@Override
 	public List<BidDto> getAllBids() throws BidException {
 		List<Bid> entities = repository.getAllBids();
-		return Utils.getBidsFromEntity(entities);
+		return EntityDtoMapper.getBidsFromEntity(entities);
 	}
 
 }

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class CategoryDto implements Serializable {
 
-	private static final long serialVersionUID = 18499821369403564L;
+	private static final long serialVersionUID = 1142848108202460553L;
 	private Long id;
 	private Long parentId;
 	private String name;
@@ -14,11 +14,11 @@ public class CategoryDto implements Serializable {
 		super();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

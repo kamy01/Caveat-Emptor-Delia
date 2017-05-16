@@ -1,16 +1,22 @@
 package com.biddingapp.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.TreeNode;
 
 import model.BidDto;
@@ -18,12 +24,15 @@ import model.CategoryDto;
 import model.ItemDto;
 import services.bidding.BidService;
 import services.item.ItemService;
+import utils.ItemStatusEnum;
 import utils.exceptions.BidException;
 import utils.exceptions.ItemException;
 
 @ManagedBean(name = "itemBean")
 @ViewScoped
-public class ItemBean {
+public class ItemBean implements Serializable {
+
+	private static final long serialVersionUID = 1257300281145215446L;
 
 	@EJB
 	ItemService service;
@@ -42,49 +51,86 @@ public class ItemBean {
 	private static Map<ItemDto, Long> maxBids;
 	private static Map<ItemDto, Integer> numberOfBids;
 	private static List<BidDto> bidsList;
+	private static List<String> statusList;
+	private static ItemDto item;
 
 	@PostConstruct
 	public void init() {
+
+		initCollections();
+		treeBean.init();
+
+		itemSetup();
+
+		populateItemList();
+		populateBidsList();
+		populateBidsDetailsLists();
+		populateCategoriesList();
+		populateStatusList();
+	}
+
+	private void itemSetup() {
+		item = new ItemDto();
+		item.setOpeningDate(new Date());
+		item.setClosingDate(new Date());
+	}
+
+	private void initCollections() {
 
 		categoriesList = new ArrayList<CategoryDto>();
 		bidsMap = new HashMap<ItemDto, List<BidDto>>();
 		bidsList = new ArrayList<BidDto>();
 		maxBids = new HashMap<ItemDto, Long>();
 		numberOfBids = new HashMap<ItemDto, Integer>();
-		
-		treeBean.init();
-		populateItemList();
-		populateBidsList();
-		populateBidsDetailsLists();
-		populateCategoriesList();
+
 	}
 
+	private void populateStatusList() {
+
+		statusList = new ArrayList<String>();
+
+		statusList.add(ItemStatusEnum.ABANDONED.getStatus());
+		statusList.add(ItemStatusEnum.OPEN.getStatus());
+		statusList.add(ItemStatusEnum.CLOSED.getStatus());
+		statusList.add(ItemStatusEnum.NOT_YET_OPENED.getStatus());
+	}
 
 	private void populateBidsDetailsLists() {
 
 		List<BidDto> bidList;
-		
-		for(ItemDto item: itemList)
-		{
+
+		for (ItemDto item : itemList) {
 			bidList = getBidListForItem(item);
 			maxBids.put(item, calculateMax(bidList));
 			numberOfBids.put(item, bidList.size());
 		}
-		
+
+	}
+
+	public void onNodeSelect(NodeSelectEvent event) {
+
+		if (isNodeSelected(treeBean)) {
+
+			item.setCategory((CategoryDto) treeBean.getSelectedNode().getData());
+		}
+
+	}
+
+	private boolean isNodeSelected(CategoriesTreeBean tree) {
+
+		return tree.getSelectedNode() != null ? true : false;
 	}
 
 	private Long calculateMax(List<BidDto> bidList) {
 
 		Long max = -1L;
-		
-		for(BidDto bid: bidList)
-		{
-			if (max < bid.getPrice())
-			{
+
+		for (BidDto bid : bidList) {
+			if (max < bid.getPrice()) {
 				max = bid.getPrice();
 			}
 		}
-		
+
 		return max;
 	}
 
@@ -93,7 +139,6 @@ public class ItemBean {
 		try {
 			bidsList = bidService.getAllBids();
 		} catch (BidException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -105,6 +150,35 @@ public class ItemBean {
 			bidsMap.put(item, itemBids);
 		}
 
+	}
+
+	public String addNewItem() {
+
+		FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", item.toString()),
+				error = new FacesMessage(FacesMessage.SEVERITY_WARN, "NOT OK ", "Please add all the info!");
+
+		if (item.getName() != null && item.getDescription() != null && item.getInitialPrice() != null
+				&& item.getCategory() != null) {
+			item.setStatus(ItemStatusEnum.NOT_YET_OPENED.getStatus());
+			item.setOwner(login.getUser());
+			FacesContext.getCurrentInstance().addMessage(null, success);
+			try {
+				service.addNewItem(item);
+						
+				initCollections();
+				populateItemList();
+				populateBidsList();
+				populateBidsDetailsLists();
+				populateCategoriesList();
+				populateStatusList();
+				itemSetup();
+				return "caveatEmptor.xhtml?faces-redirect=true";
+				
+			} catch (ItemException e) {
+				FacesContext.getCurrentInstance().addMessage(null, error);
+			}
+		}
+		return null;
 	}
 
 	private List<BidDto> getBidListForItem(ItemDto item) {
@@ -130,11 +204,30 @@ public class ItemBean {
 	private void populateItemList() {
 
 		try {
-			itemList = service.getAllItems();
+			itemList = service.getAllItemsForUser(login.getUser());
 		} catch (ItemException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void onRowEdit(RowEditEvent event) {
+
+		FacesMessage msg;
+
+		try {
+			service.updateItem((ItemDto) event.getObject());
+			msg = new FacesMessage("Item Edited", ((ItemDto) event.getObject()).getName());
+		} catch (ItemException ie) {
+			msg = new FacesMessage("Error when trying to edit", ((ItemDto) event.getObject()).getName());
+		}
+
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Edit Cancelled", ((ItemDto) event.getObject()).getName());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	public UserLoginBean getLogin() {
@@ -184,7 +277,6 @@ public class ItemBean {
 	public static void setBidsList(List<BidDto> bidsList) {
 		ItemBean.bidsList = bidsList;
 	}
-	
 
 	public static Map<ItemDto, Long> getMaxBids() {
 		return maxBids;
@@ -200,6 +292,22 @@ public class ItemBean {
 
 	public static void setNumberOfBids(Map<ItemDto, Integer> numberOfBids) {
 		ItemBean.numberOfBids = numberOfBids;
+	}
+
+	public static List<String> getStatusList() {
+		return statusList;
+	}
+
+	public static void setStatusList(List<String> statusList) {
+		ItemBean.statusList = statusList;
+	}
+
+	public static ItemDto getItem() {
+		return item;
+	}
+
+	public static void setItem(ItemDto item) {
+		ItemBean.item = item;
 	}
 
 }

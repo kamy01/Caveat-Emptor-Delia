@@ -14,7 +14,6 @@ public interface CategoryService {
 	public CategoryDto findCategoryByName(String name) throws CategoryException;
 	public CategoryDto findCategoryById(Long id) throws CategoryException;
 	public void removeCategory(CategoryDto category) throws CategoryException;
-	public void removeCategory(Long id);
 	public void updateCategory(CategoryDto category) throws CategoryException;
 	
 }

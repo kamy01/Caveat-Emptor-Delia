@@ -7,106 +7,201 @@
 <h:head>
 </h:head>
 <h:body>
-	<div id="items-page">
 
-		<p:growl id="msgs" showDetail="true" />
-		<div id="items-dropdown">
-			<p:outputLabel for="itemPurpose" value="Items to: " />
-			<p:selectOneMenu id="itemPurpose" value="#{itemsDropdown.itemType}"
-				style="width:150px">
-				<p:ajax listener="#{itemsDropdown.onItemTypeChange}" update="msgs" />
+	<h:panelGroup id="items-page-panel">
+		<div id="items-page">
 
-				<f:selectItem itemLabel="Select type" itemValue=""
-					noSelectionOption="true" />
-				<f:selectItems value="#{itemsDropdown.itemTypes}" />
-			</p:selectOneMenu>
 
-			<p:commandButton value="Define new item" type="button"
-				id="newItemBtn" style="left:25%; position:absolute;"
-				onclick="PF('dlg2').show();" />
+			<p:growl id="msgs" showDetail="true" />
+			<div id="items-dropdown">
+				<p:outputLabel for="itemPurpose" value="Items to: " />
+				<p:selectOneMenu id="itemPurpose" value="#{itemsDropdown.itemType}"
+					style="width:150px">
+					<p:ajax listener="#{itemsDropdown.onItemTypeChange}" update="msgs" />
 
-		</div>
+					<f:selectItem itemLabel="Select type" itemValue=""
+						noSelectionOption="true" />
+					<f:selectItems value="#{itemsDropdown.itemTypes}" />
+				</p:selectOneMenu>
 
-		<div id="items-table-content">
-			<h:form id="items-content">
-				<p:dataTable id="items-table" styleClass="order-table"
-					value="#{itemBean.getItemList()}" var="it"
-					headerClass="order-table-header" editable="true"
-					rowClasses="order-table-odd-row,order-table-even-row">
-					<p:column class="column-tab" headerText="Name" sortBy="#{it.name}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{it.name}" />
-							</f:facet>
-							<f:facet name="input">
-								<p:inputText id="itemNameInput" value="#{it.name}"
-									style="width:100%" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
+				<p:commandButton value="Define new item" type="button"
+					id="newItemBtn" style="left:25%; position:absolute;"
+					onclick="PF('dlg2').show();" />
 
-					<p:column class="column-tab" headerText="Category"
-						sortBy="#{it.category.name}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{it.category.name}" />
-							</f:facet>
-							<f:facet name="input">
-								<h:selectOneMenu value="#{it.category.name}" style="width:100%">
-									<f:selectItems value="#{itemBean.getCategoriesList()}"
-										var="cat" itemLabel="#{cat.name}" itemValue="#{cat.name}" />
-								</h:selectOneMenu>
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
+			</div>
+			<h:form id="items-form">
 
-					<p:column class="column-tab" headerText="Initial price"
-						sortBy="#{it.initialPrice}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{it.initialPrice}" />
-							</f:facet>
-							<f:facet name="input">
-								<p:inputText id="itemInitialPriceInput"
-									value="#{it.initialPrice}" style="width:100%" />
-							</f:facet>
-						</p:cellEditor>
-					</p:column>
-					<p:column class="column-tab" headerText="Best bid">
-						<h:outputText value="#{itemBean.getMaxBids().get(it)}" />
-					</p:column>
-					<p:column class="column-tab" headerText="Your bid">
+				<div id="items-table-content">
+					<h:form id="items-content">
+
+						<p:growl id="msg" showDetail="true" />
+
+						<p:dataTable id="items-table" styleClass="order-table"
+							value="#{itemBean.getItemList()}" var="it"
+							headerClass="order-table-header" editable="true"
+							rowClasses="order-table-odd-row,order-table-even-row"
+							paginator="true" rows="5"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,8">
+
+							<p:ajax event="rowEdit" listener="#{itemBean.onRowEdit}"
+								update=":content-form:tabView:items-form:items-content:msg" />
+							<p:ajax event="rowEditCancel" listener="#{itemBean.onRowCancel}"
+								update=":content-form:tabView:items-form:items-content:msg" />
+
+							<p:column class="column-tab" headerText="Name"
+								sortBy="#{it.name}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{it.name}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="itemNameInput" value="#{it.name}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column class="column-tab" headerText="Category"
+								sortBy="#{it.category.name}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{it.category.name}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:selectOneMenu value="#{it.category.name}"
+											style="width:100%">
+											<f:selectItems value="#{itemBean.getCategoriesList()}"
+												var="cat" itemLabel="#{cat.name}" itemValue="#{cat.name}" />
+										</h:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column class="column-tab" headerText="Initial price"
+								sortBy="#{it.initialPrice}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{it.initialPrice}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="itemInitialPriceInput"
+											value="#{it.initialPrice}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column class="column-tab" headerText="Best bid">
+								<h:outputText value="#{itemBean.getMaxBids().get(it)}" />
+							</p:column>
+							<p:column class="column-tab" headerText="Your bid">
 					my bid
 					</p:column>
-					<p:column class="column-tab" headerText="#bids">
-						<h:outputText value="#{itemBean.getNumberOfBids().get(it)}" />
-					</p:column>
-					<p:column class="column-tab" headerText="Opening date"
-						sortBy="#{it.openingDate}">
-						<h:outputText value="#{it.openingDate}" />
-					</p:column>
-					<p:column class="column-tab" headerText="Closing date"
-						sortBy="#{it.closingDate}">
-						<h:outputText value="#{it.closingDate}" />
-					</p:column>
-					<p:column class="column-tab" headerText="Status"
-						sortBy="#{it.status}">
-						<h:outputText value="#{it.status}" />
-					</p:column>
-					<p:column class="column-tab" headerText="Winner"
-						sortBy="#{it.winner}">
-						<h:outputText value="Delia" />
-					</p:column>
-					<p:column>
-						<p:rowEditor />
-					</p:column>
-				</p:dataTable>
+							<p:column class="column-tab" headerText="#bids">
+								<h:outputText value="#{itemBean.getNumberOfBids().get(it)}" />
+							</p:column>
+
+							<p:column class="column-tab" headerText="Opening date"
+								sortBy="#{it.openingDate}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{it.openingDate}" />
+									</f:facet>
+
+									<f:facet name="input">
+										<p:calendar id="openingDateInput" value="#{it.openingDate}"
+											pattern="dd-MM-yyyy HH:mm" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column class="column-tab" headerText="Closing date"
+								sortBy="#{it.closingDate}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{it.closingDate}" />
+									</f:facet>
+
+									<f:facet name="input">
+										<p:calendar id="closingDateInput" value="#{it.closingDate}"
+											pattern="dd/MM/yyyy HH:mm" />
+									</f:facet>
+
+								</p:cellEditor>
+							</p:column>
+							<p:column class="column-tab" headerText="Status"
+								sortBy="#{it.status}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{it.status}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:selectOneMenu value="#{it.status}" style="width:100%">
+											<f:selectItems value="#{itemBean.getStatusList()}" var="cat"
+												itemLabel="#{cat}" itemValue="#{cat}" />
+										</h:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column class="column-tab" headerText="Winner"
+								sortBy="#{it.winner.username}">
+								<h:outputText value="#{it.winner.username}" />
+							</p:column>
+							<p:column>
+								<p:rowEditor />
+							</p:column>
+						</p:dataTable>
+					</h:form>
+				</div>
+
 			</h:form>
 		</div>
-	</div>
-	<p:dialog header="Basic Dialog" widgetVar="dlg2" modal="true"
-		minHeight="20" showEffect="fade" hideEffect="fade">
-		<h:outputText value="Resistance to PrimeFaces is futile!" />
-	</p:dialog>
+
+		<p:growl id="growl" showDetail="true" />
+		<p:dialog header="New Item" widgetVar="dlg2" modal="true"
+			id="newItemDlg" minHeight="20" showEffect="fade" hideEffect="fade">
+			<h:panelGrid columns="2" cellpadding="5">
+
+				<h:outputLabel for="itemName" value="Item name:" />
+				<p:inputText id="itemName" value="#{itemBean.getItem().name}" label="Item name"/>
+
+				<h:outputLabel for="itemDescription" value="Description:" />
+				<p:inputText id="itemDescription"
+					value="#{itemBean.getItem().description}"
+					label="Description" />
+
+				<h:outputLabel for="itemCategory" value="Category:" />
+				<p:tree value="#{treeBasicView.root}" var="node"
+					selectionMode="single" selection="#{treeBasicView.selectedNode}"
+					id="itemCategory">
+					<p:ajax event="select" listener="#{itemBean.onNodeSelect}" />
+					<p:treeNode>
+						<h:outputText value="#{node.getName()}" />
+					</p:treeNode>
+				</p:tree>
+
+				<h:outputLabel for="itemInitialPrice" value="Starting price" />
+				<p:inputText id="itemInitialPrice"
+					value="#{itemBean.getItem().initialPrice}"
+					label="price" />
+
+				<h:outputLabel for="openingDate" value="Opening date" />
+				<p:calendar id="openingDate"
+					value="#{itemBean.getItem().openingDate}"
+					pattern="dd-MM-yyyy HH:mm" />
+
+				<h:outputLabel for="closingDate" value="Closing date" />
+				<p:calendar id="closingDate"
+					value="#{itemBean.getItem().closingDate}"
+					pattern="dd-MM-yyyy HH:mm" />
+
+				<f:facet name="footer">
+					<p:commandButton value="Add item" update="growl" type="submit">
+						<p:ajax listener="#{itemBean.addNewItem()}" process="@form"
+							update="content-form:tabView:items-form content-form:tabView:newItemDlg growl" />
+					</p:commandButton>
+				</f:facet>
+			</h:panelGrid>
+		</p:dialog>
+
+	</h:panelGroup>
 </h:body>
 </html>

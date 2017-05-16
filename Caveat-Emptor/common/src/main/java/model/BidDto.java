@@ -4,9 +4,8 @@ import java.io.Serializable;
 
 public class BidDto implements Serializable {
 
-	private static final long serialVersionUID = 4877497683101730055L;
-
-	private long id;
+	private static final long serialVersionUID = 496396044527402026L;
+	private Long id;
 	private ItemDto item;
 	private UserDto user;
 	private Long price;
@@ -16,11 +15,11 @@ public class BidDto implements Serializable {
 		super();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

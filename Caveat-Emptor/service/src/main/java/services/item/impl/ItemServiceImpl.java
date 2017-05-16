@@ -8,9 +8,10 @@ import javax.ejb.Stateless;
 
 import entities.Item;
 import model.ItemDto;
+import model.UserDto;
 import repository.ItemRepository;
 import services.item.ItemService;
-import services.util.Utils;
+import services.util.EntityDtoMapper;
 import utils.exceptions.ItemException;
 
 @Stateless
@@ -24,7 +25,29 @@ public class ItemServiceImpl implements ItemService{
 	public List<ItemDto> getAllItems() throws ItemException {
 		
 		List<Item> entities = repository.getAllItems();
-		return Utils.getItemFromEntity(entities);
+		return EntityDtoMapper.getItemFromEntity(entities);
+	}
+
+	@Override
+	public List<ItemDto> getAllItemsForUser(UserDto owner) throws ItemException {
+
+		List<Item> entities = repository.getAllItemsForUser(EntityDtoMapper.getUserFromDto(owner));
+		return EntityDtoMapper.getItemFromEntity(entities);
+	}
+
+	@Override
+	public void updateItem(ItemDto item) throws ItemException {
+
+		Item entity = EntityDtoMapper.getItemFromDto(item);
+		repository.updateItem(entity);
+	}
+
+	@Override
+	public void addNewItem(ItemDto item) throws ItemException {
+
+		Item entity = EntityDtoMapper.getItemFromDto(item);
+		repository.addItem(entity);
+		
 	}
 
 }

@@ -7,9 +7,17 @@ body {
 }
 
 #items-table-content {
-	padding-top: 4%;
+	padding-top: 2%;
 	padding-left: 2.5%;
 	padding-right: 2.5%;
+}
+
+dl {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
 }
 
 #items-dropdown {
@@ -20,8 +28,53 @@ body {
 	width: inherit !important;
 }
 
-ui-selectonemenu-item, .ui-selectonemenu-list-item, .ui-noselection-option, .ui-state-highlight {
+.ui-selectonemenu-item, .ui-selectonemenu-list-item, .ui-noselection-option, .ui-state-highlight {
 	width: inherit !important;
+}
+
+#ui-datepicker-div {
+	background-color: #f4f4f4 !important;
+}
+
+.ui-slider .ui-slider-handle {
+	position: absolute;
+	z-index: 2;
+	width: 16px !important;
+	height: 16px !important;
+	cursor: default;
+	background: url(../images/circle_grey.png) 0 0 no-repeat;
+	outline: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	border: 1;
+}
+
+.ui-widget-content {
+    border: 1px solid #aaaaaa;
+    background: #ffffff url(/showcase/javax.faces.resource/images/ui-bg_flat_75_ffffff_40x100.png.xhtml?ln=primefaces-smoothness) 50% 50% repeat-x;
+    color: #222222;
+}
+
+.ui-corner-all {
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+
+
+.ui-slider-horizontal .ui-slider-handle {
+    top: -.3em;
+    margin-left: -.6em;
+}
+
+.ui-slider .ui-slider-handle {
+    position: absolute;
+    z-index: 2;
+    width: 1.2em;
+    height: 1.2em;
+    cursor: default;
 }
 
 #itemPurpose {
@@ -48,6 +101,10 @@ ui-selectonemenu-item, .ui-selectonemenu-list-item, .ui-noselection-option, .ui-
 	margin-top: -4%;
 }
 
+#items-page {
+	position: absolute;
+}
+
 #header {
 	position: absolute;
 	width: 100%;
@@ -68,7 +125,7 @@ h1, h2, h3, h4, h5, h6, a {
 .login {
 	margin: 0 auto;
 	max-width: 500px;
-	background: url('http://cdn.wallpapersafari.com/29/57/jSKmkC.jpg')
+	background: url(http://cdn.wallpapersafari.com/29/57/jSKmkC.jpg)
 		no-repeat center;
 }
 
@@ -183,6 +240,11 @@ margin-right: 10%;
 	border: 1px solid grey;
 }
 
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
+    filter: Alpha(Opacity=35);
+    background-image: none;
+    }
+
 #search-popup {
 	position: absolute;
 	width: inherit;
@@ -223,7 +285,7 @@ margin-right: 10%;
 .register {
 	margin: 0 auto;
 	max-width: 500px;
-	background: url('http://cdn.wallpapersafari.com/29/57/jSKmkC.jpg')
+	background: url(http://cdn.wallpapersafari.com/29/57/jSKmkC.jpg)
 		no-repeat center;
 }
 

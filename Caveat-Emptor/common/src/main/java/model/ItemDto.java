@@ -1,32 +1,31 @@
 package model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class ItemDto implements Serializable {
 
-	private static final long serialVersionUID = 5830382014860046401L;
-
-	private long id;
+	private static final long serialVersionUID = -1361955225797897987L;
+	private Long id;
 	private UserDto owner;
 	private CategoryDto category;
 	private String name;
 	private String description;
-	private long initialPrice;
-	private Timestamp openingDate;
-	private Timestamp closingDate;
+	private Long initialPrice;
+	private Date openingDate;
+	private Date closingDate;
 	private String status;
-	private long winner;
+	private UserDto winner;
 
 	public ItemDto() {
 
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -54,27 +53,27 @@ public class ItemDto implements Serializable {
 		this.description = description;
 	}
 
-	public long getInitialPrice() {
+	public Long getInitialPrice() {
 		return initialPrice;
 	}
 
-	public void setInitialPrice(long initialPrice) {
+	public void setInitialPrice(Long initialPrice) {
 		this.initialPrice = initialPrice;
 	}
 
-	public Timestamp getOpeningDate() {
-		return openingDate;
+	public Date getOpeningDate() {
+		return (Date) openingDate.clone();
 	}
 
-	public void setOpeningDate(Timestamp openingDate) {
+	public void setOpeningDate(Date openingDate) {
 		this.openingDate = openingDate;
 	}
 
-	public Timestamp getClosingDate() {
-		return closingDate;
+	public Date getClosingDate() {
+		return (Date) closingDate.clone();
 	}
 
-	public void setClosingDate(Timestamp closingDate) {
+	public void setClosingDate(Date closingDate) {
 		this.closingDate = closingDate;
 	}
 
@@ -86,11 +85,11 @@ public class ItemDto implements Serializable {
 		this.status = status;
 	}
 
-	public long getWinner() {
+	public UserDto getWinner() {
 		return winner;
 	}
 
-	public void setWinner(long winner) {
+	public void setWinner(UserDto winner) {
 		this.winner = winner;
 	}
 

@@ -11,15 +11,14 @@ import javax.persistence.*;
 		@NamedQuery(name = "User.findById", query = "SELECT usr FROM User usr WHERE usr.id  = :name"), })
 public class User implements Serializable {
 
+	private static final long serialVersionUID = 5863801679193281332L;
 	public static final String FIND_USER_BY_USERNAME = "User.findByUsername";
 	public static final String FIND_USER_BY_EMAIL = "User.findByEmail";
 	public static final String FIND_USER_BY_ID = "User.findById";
-	
-	private static final long serialVersionUID = 9047647663339787977L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	@Column(length = 45)
 	private String username;
@@ -55,15 +54,15 @@ public class User implements Serializable {
 		this.address = address;
 	}
 
-	public void setId(long userId) {
+	public void setId(Long userId) {
 		this.id = userId;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setuserId(long userId) {
+	public void setuserId(Long userId) {
 		this.id = userId;
 	}
 
@@ -157,6 +156,12 @@ public class User implements Serializable {
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + ", address=" + address + ", state=" + state + "]";
 	}
 
 }

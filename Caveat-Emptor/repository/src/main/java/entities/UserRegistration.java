@@ -21,8 +21,8 @@ import javax.persistence.Table;
     			query="SELECT reg FROM UserRegistration reg where reg.user.id = :name"),
 }) 
 public class UserRegistration implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 6264641848581551347L;
 	public static final String FIND_REGISTRATION_BY_USERID = "UserRegistration.findRegistrationByUserId";
 
 	@Id

@@ -37,9 +37,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 			return category;
 
 		} catch (IllegalArgumentException e) {
-			throw new CategoryException(e + GET_CATEGORY_ERROR + id);
+			throw new CategoryException(e.getMessage() + GET_CATEGORY_ERROR + id);
 		} catch (Exception e) {
-			throw new CategoryException(e + GET_CATEGORY_ERROR + id);
+			throw new CategoryException(e.getMessage() + GET_CATEGORY_ERROR + id);
 		}
 
 	}
@@ -52,13 +52,13 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 			em.flush();
 
 		} catch (IllegalArgumentException e) {
-			throw new CategoryException(e + INSERT_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + INSERT_CATEGORY_ERROR + category.toString());
 		} catch (EntityExistsException e) {
-			throw new CategoryException(e + INSERT_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + INSERT_CATEGORY_ERROR + category.toString());
 		} catch (TransactionRequiredException e) {
-			throw new CategoryException(e + INSERT_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + INSERT_CATEGORY_ERROR + category.toString());
 		} catch (Exception e) {
-			throw new CategoryException(e + INSERT_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + INSERT_CATEGORY_ERROR + category.toString());
 		}
 	}
 
@@ -69,15 +69,16 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 			em.merge(category);
 
 		} catch (IllegalArgumentException e) {
-			throw new CategoryException(e + UPDATE_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + UPDATE_CATEGORY_ERROR + category.toString());
 		} catch (TransactionRequiredException e) {
-			throw new CategoryException(e + UPDATE_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + UPDATE_CATEGORY_ERROR + category.toString());
 		} catch (Exception e) {
-			throw new CategoryException(e + UPDATE_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + UPDATE_CATEGORY_ERROR + category.toString());
 		}
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Category> getAllCategories() {
 
@@ -88,6 +89,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Category> getChildren(Category parent) throws CategoryException {
 
@@ -108,9 +110,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 			return category;
 
 		} catch (IllegalArgumentException e) {
-			throw new CategoryException(e + GET_CATEGORY_ERROR + name);
+			throw new CategoryException(e.getMessage() + GET_CATEGORY_ERROR + name);
 		} catch (Exception e) {
-			throw new CategoryException(e + GET_CATEGORY_ERROR + name);
+			throw new CategoryException(e.getMessage() + GET_CATEGORY_ERROR + name);
 		}
 	}
 
@@ -121,11 +123,11 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 			em.remove(em.contains(category) ? category : em.merge(category));
 
 		} catch (IllegalArgumentException e) {
-			throw new CategoryException(e + DELETE_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + DELETE_CATEGORY_ERROR + category.toString());
 		} catch (TransactionRequiredException e) {
-			throw new CategoryException(e + DELETE_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + DELETE_CATEGORY_ERROR + category.toString());
 		} catch (Exception e) {
-			throw new CategoryException(e + DELETE_CATEGORY_ERROR + category.toString());
+			throw new CategoryException(e.getMessage() + DELETE_CATEGORY_ERROR + category.toString());
 		}
 	}
 

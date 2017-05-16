@@ -11,7 +11,7 @@ import model.UserDto;
 import repository.UserRepository;
 import services.register.RegisterService;
 import services.register.email.ConfirmationEmail;
-import services.util.Utils;
+import services.util.EntityDtoMapper;
 import utils.exceptions.UserException;
 import utils.UserStateEnum;
 
@@ -25,11 +25,11 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public UserDto insertNewUser(RegistrationDto registration) throws UserException {
 
-		UserRegistration userRegistration = Utils.getRegistrationFromDto(registration);
+		UserRegistration userRegistration = EntityDtoMapper.getRegistrationFromDto(registration);
 		long userId = repository.insertNewUser(userRegistration);
 		User newUser = repository.getUserById(userId);
 
-		return Utils.getUserFromEntity(newUser);
+		return EntityDtoMapper.getUserFromEntity(newUser);
 	}
 
 	@Override
@@ -38,7 +38,6 @@ public class RegisterServiceImpl implements RegisterService {
 		try {
 			return repository.checkExistingUser(userName);
 		} catch (UserException e) {
-			// TODO Auto-generated catch block
 			return false;
 		}
 	}
@@ -71,7 +70,7 @@ public class RegisterServiceImpl implements RegisterService {
 	}
 
 	private void removRegistration(RegistrationDto registration) throws UserException {
-		UserRegistration userReg = Utils.getRegistrationFromDto(registration);
+		UserRegistration userReg = EntityDtoMapper.getRegistrationFromDto(registration);
 		userReg.setId(registration.getId());
 
 		repository.deleteRegistration(userReg);
@@ -81,7 +80,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 		UserDto userDto = registration.getUser();
 		userDto.setState(UserStateEnum.ENABLED.getState());
-		User userEntity = (Utils.getUserFromDto(userDto));
+		User userEntity = (EntityDtoMapper.getUserFromDto(userDto));
 		repository.updateUser(userEntity);
 	}
 
@@ -89,7 +88,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 		RegistrationDto registrationDto = new RegistrationDto();
 		UserRegistration registration = repository.getRegistrationByUserId(userId);
-		registrationDto = Utils.getRegistrationFromEntity(registration);
+		registrationDto = EntityDtoMapper.getRegistrationFromEntity(registration);
 
 		return registrationDto;
 

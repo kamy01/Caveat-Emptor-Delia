@@ -1,5 +1,6 @@
 package com.biddingapp.beans;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -18,9 +19,16 @@ public class UserLoginBean {
 
 	private String username;
 	private String password;
+	
+	private UserDto user;
 
 	@EJB
 	LoginService userService;
+	
+	@PostConstruct
+	public void init() {
+		user = new UserDto();
+	}
 
 	public String getUsername() {
 		return username;
@@ -44,19 +52,19 @@ public class UserLoginBean {
 				EnumLogin.INVALID_CREDENTIALS.getConstant()),
 				success = new FacesMessage(FacesMessage.SEVERITY_INFO, EnumLogin.WELCOME.getConstant(), username);
 
-		UserDto userDto = new UserDto();
+
 		try {
-			userDto = userService.getUser(username);
+			user = userService.getUser(username);
 		} catch (UserException e) {
 			FacesContext.getCurrentInstance().addMessage(null, error);
 			return null;
 		}
 
-		boolean passwordMatch = password.equals(userDto.getPassword());
-		boolean usernameMatch = username.equals(userDto.getUsername());
-		boolean isEnabled = userDto.getState().equals(UserStateEnum.ENABLED.getState());
+		boolean passwordMatch = password.equals(user.getPassword());
+		boolean usernameMatch = username.equals(user.getUsername());
+		boolean isEnabled = user.getState().equals(UserStateEnum.ENABLED.getState());
 
-		if (!userDto.equals(null) && passwordMatch && usernameMatch && isEnabled) {
+		if (!user.equals(null) && passwordMatch && usernameMatch && isEnabled) {
 
 			FacesContext.getCurrentInstance().addMessage(null, success);
 			return "caveatEmptor.xhtml?faces-redirect=true";
@@ -66,6 +74,14 @@ public class UserLoginBean {
 			FacesContext.getCurrentInstance().addMessage(null, error);
 			return null;
 		}
+	}
+
+	public UserDto getUser() {
+		return user;
+	}
+
+	public void setUser(UserDto user) {
+		this.user = user;
 	}
 
 }

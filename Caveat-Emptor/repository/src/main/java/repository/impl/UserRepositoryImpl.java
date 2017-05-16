@@ -36,9 +36,9 @@ public class UserRepositoryImpl implements UserRepository {
 			return user;
 
 		} catch (IllegalArgumentException e) {
-			throw new UserException(e + GET_USER_ERROR + username);
+			throw new UserException(e.getMessage() + GET_USER_ERROR + username);
 		} catch (Exception e) {
-			throw new UserException(e + GET_USER_ERROR + username);
+			throw new UserException(e.getMessage() + GET_USER_ERROR + username);
 		}
 	}
 
@@ -54,9 +54,9 @@ public class UserRepositoryImpl implements UserRepository {
 				return false;
 			}
 		} catch (IllegalArgumentException e) {
-			throw new UserException(e + CHECK_USER_ERROR + email);
+			throw new UserException(e.getMessage() + CHECK_USER_ERROR + email);
 		} catch (Exception e) {
-			throw new UserException(e + CHECK_USER_ERROR + email);
+			throw new UserException(e.getMessage() + CHECK_USER_ERROR + email);
 		}
 	}
 
@@ -71,9 +71,9 @@ public class UserRepositoryImpl implements UserRepository {
 				return false;
 			}
 		} catch (IllegalArgumentException e) {
-			throw new UserException(e + CHECK_USER_ERROR + userName);
+			throw new UserException(e.getMessage() + CHECK_USER_ERROR + userName);
 		} catch (Exception e) {
-			throw new UserException(e + CHECK_USER_ERROR + userName);
+			throw new UserException(e.getMessage() + CHECK_USER_ERROR + userName);
 		}
 	}
 
@@ -86,13 +86,13 @@ public class UserRepositoryImpl implements UserRepository {
 			return registration.getUser().getId();
 
 		} catch (IllegalArgumentException e) {
-			throw new UserException(e + INSERT_USER_ERROR + registration.toString());
+			throw new UserException(e.getMessage() + INSERT_USER_ERROR + registration.toString());
 		} catch (EntityExistsException e) {
-			throw new UserException(e + INSERT_USER_ERROR + registration.toString());
+			throw new UserException(e.getMessage() + INSERT_USER_ERROR + registration.toString());
 		} catch (TransactionRequiredException e) {
-			throw new UserException(e + INSERT_USER_ERROR + registration.toString());
+			throw new UserException(e.getMessage() + INSERT_USER_ERROR + registration.toString());
 		} catch (Exception e) {
-			throw new UserException(e + INSERT_USER_ERROR + registration.toString());
+			throw new UserException(e.getMessage() + INSERT_USER_ERROR + registration.toString());
 		}
 	}
 
@@ -103,11 +103,11 @@ public class UserRepositoryImpl implements UserRepository {
 			em.merge(user);
 
 		} catch (IllegalArgumentException e) {
-			throw new UserException(e + UPDATE_USER_ERROR + user.toString());
+			throw new UserException(e.getMessage() + UPDATE_USER_ERROR + user.toString());
 		} catch (TransactionRequiredException e) {
-			throw new UserException(e + UPDATE_USER_ERROR + user.toString());
+			throw new UserException(e.getMessage() + UPDATE_USER_ERROR + user.toString());
 		} catch (Exception e) {
-			throw new UserException(e + UPDATE_USER_ERROR + user.toString());
+			throw new UserException(e.getMessage() + UPDATE_USER_ERROR + user.toString());
 		}
 
 	}
@@ -123,9 +123,9 @@ public class UserRepositoryImpl implements UserRepository {
 			return user;
 
 		} catch (IllegalArgumentException e) {
-			throw new UserException(e + GET_USER_ERROR + id);
+			throw new UserException(e.getMessage() + GET_USER_ERROR + id);
 		} catch (Exception e) {
-			throw new UserException(e + GET_USER_ERROR + id);
+			throw new UserException(e.getMessage() + GET_USER_ERROR + id);
 		}
 
 	}
@@ -141,9 +141,9 @@ public class UserRepositoryImpl implements UserRepository {
 			return registration;
 
 		} catch (IllegalArgumentException e) {
-			throw new UserException(e + GET_REGISTRATION_ERROR + id);
+			throw new UserException(e.getMessage() + GET_REGISTRATION_ERROR + id);
 		} catch (Exception e) {
-			throw new UserException(e + GET_REGISTRATION_ERROR + id);
+			throw new UserException(e.getMessage() + GET_REGISTRATION_ERROR + id);
 		}
 	}
 
@@ -154,11 +154,11 @@ public class UserRepositoryImpl implements UserRepository {
 			em.remove(em.contains(registration) ? registration : em.merge(registration));
 
 		} catch (IllegalArgumentException e) {
-			throw new UserException(e + DELETE_REGISTRATION_ERROR + registration.toString());
+			throw new UserException(e.getMessage() + DELETE_REGISTRATION_ERROR + registration.toString());
 		} catch (TransactionRequiredException e) {
-			throw new UserException(e + DELETE_REGISTRATION_ERROR + registration.toString());
+			throw new UserException(e.getMessage() + DELETE_REGISTRATION_ERROR + registration.toString());
 		} catch (Exception e) {
-			throw new UserException(e + DELETE_REGISTRATION_ERROR + registration.toString());
+			throw new UserException(e.getMessage() + DELETE_REGISTRATION_ERROR + registration.toString());
 		}
 	}
 }

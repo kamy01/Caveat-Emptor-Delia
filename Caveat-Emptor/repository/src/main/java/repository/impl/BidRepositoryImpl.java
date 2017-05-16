@@ -23,6 +23,7 @@ public class BidRepositoryImpl implements BidRepository {
 	@PersistenceContext(unitName = "myapp")
 	EntityManager em;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Bid> getAllBids() throws BidException {
 		List<Bid> bidList = new ArrayList<Bid>();
@@ -32,15 +33,14 @@ public class BidRepositoryImpl implements BidRepository {
 			return bidList;
 
 		} catch (IllegalArgumentException e) {
-			throw new BidException(e + GET_ALL_BIDS_ERROR);
+			throw new BidException(e.getMessage() + GET_ALL_BIDS_ERROR);
 		} catch (Exception e) {
-			throw new BidException(e + GET_ALL_BIDS_ERROR);
+			throw new BidException(e.getMessage() + GET_ALL_BIDS_ERROR);
 		}
 	}
 
 	@Override
 	public List<Bid> getBidsForItem(Item item) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
