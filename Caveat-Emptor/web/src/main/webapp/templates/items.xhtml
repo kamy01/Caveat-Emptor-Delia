@@ -155,9 +155,12 @@
 			</h:form>
 		</div>
 
-		<p:growl id="growl" showDetail="true" />
+		
 		<p:dialog header="New Item" widgetVar="dlg2" modal="true"
 			id="newItemDlg" minHeight="20" showEffect="fade" hideEffect="fade">
+			<h:form id="newItemForm">
+			
+			<p:growl id="growl" showDetail="true" />
 			<h:panelGrid columns="2" cellpadding="5">
 
 				<h:outputLabel for="itemName" value="Item name:" />
@@ -166,7 +169,7 @@
 				<h:outputLabel for="itemDescription" value="Description:" />
 				<p:inputText id="itemDescription"
 					value="#{itemBean.getItem().description}"
-					label="Description" />
+					label="Description" required="true"/>
 
 				<h:outputLabel for="itemCategory" value="Category:" />
 				<p:tree value="#{treeBasicView.root}" var="node"
@@ -194,12 +197,13 @@
 					pattern="dd-MM-yyyy HH:mm" />
 
 				<f:facet name="footer">
-					<p:commandButton value="Add item" update="growl" type="submit">
+					<p:commandButton value="Add item" type="submit">
 						<p:ajax listener="#{itemBean.addNewItem()}" process="@form"
 							update="content-form:tabView:items-form content-form:tabView:newItemDlg growl" />
 					</p:commandButton>
 				</f:facet>
 			</h:panelGrid>
+			 </h:form>
 		</p:dialog>
 
 	</h:panelGroup>

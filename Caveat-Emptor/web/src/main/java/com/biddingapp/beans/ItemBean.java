@@ -152,33 +152,30 @@ public class ItemBean implements Serializable {
 
 	}
 
-	public String addNewItem() {
+	public void addNewItem() {
 
 		FacesMessage success = new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", item.toString()),
 				error = new FacesMessage(FacesMessage.SEVERITY_WARN, "NOT OK ", "Please add all the info!");
 
 		if (item.getName() != null && item.getDescription() != null && item.getInitialPrice() != null
 				&& item.getCategory() != null) {
-			item.setStatus(ItemStatusEnum.NOT_YET_OPENED.getStatus());
+
+			if (item.getOpeningDate().after(new Date())) {
+				item.setStatus(ItemStatusEnum.OPEN.getStatus());
+			} else {
+				item.setStatus(ItemStatusEnum.NOT_YET_OPENED.getStatus());
+			}
 			item.setOwner(login.getUser());
 			FacesContext.getCurrentInstance().addMessage(null, success);
 			try {
 				service.addNewItem(item);
-						
-				initCollections();
-				populateItemList();
-				populateBidsList();
-				populateBidsDetailsLists();
-				populateCategoriesList();
-				populateStatusList();
-				itemSetup();
-				return "caveatEmptor.xhtml?faces-redirect=true";
-				
+
+				init();
+
 			} catch (ItemException e) {
 				FacesContext.getCurrentInstance().addMessage(null, error);
 			}
 		}
-		return null;
 	}
 
 	private List<BidDto> getBidListForItem(ItemDto item) {
