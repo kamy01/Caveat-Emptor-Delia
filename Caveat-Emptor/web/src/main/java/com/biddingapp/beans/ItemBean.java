@@ -15,6 +15,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.TreeNode;
@@ -45,14 +47,17 @@ public class ItemBean implements Serializable {
 	@ManagedProperty(value = "#{treeBasicView}")
 	private CategoriesTreeBean treeBean;
 
-	private static List<ItemDto> itemList;
+	private List<ItemDto> itemList;
+	private List<ItemDto> allItems;
 	private static List<CategoryDto> categoriesList;
-	private static Map<ItemDto, List<BidDto>> bidsMap;
-	private static Map<ItemDto, Long> maxBids;
-	private static Map<ItemDto, Integer> numberOfBids;
+	private Map<Long, List<BidDto>> bidsMap;
+	private Map<Long, Long> maxBids;
+	private Map<Long, Integer> numberOfBids;
 	private static List<BidDto> bidsList;
 	private static List<String> statusList;
 	private static ItemDto item;
+
+	private boolean skip;
 
 	@PostConstruct
 	public void init() {
@@ -78,10 +83,10 @@ public class ItemBean implements Serializable {
 	private void initCollections() {
 
 		categoriesList = new ArrayList<CategoryDto>();
-		bidsMap = new HashMap<ItemDto, List<BidDto>>();
+		bidsMap = new HashMap<Long, List<BidDto>>();
 		bidsList = new ArrayList<BidDto>();
-		maxBids = new HashMap<ItemDto, Long>();
-		numberOfBids = new HashMap<ItemDto, Integer>();
+		maxBids = new HashMap<Long, Long>();
+		numberOfBids = new HashMap<Long, Integer>();
 
 	}
 
@@ -99,10 +104,10 @@ public class ItemBean implements Serializable {
 
 		List<BidDto> bidList;
 
-		for (ItemDto item : itemList) {
+		for (ItemDto item : allItems) {
 			bidList = getBidListForItem(item);
-			maxBids.put(item, calculateMax(bidList));
-			numberOfBids.put(item, bidList.size());
+			maxBids.put(item.getId(), calculateMax(bidList));
+			numberOfBids.put(item.getId(), bidList.size());
 		}
 
 	}
@@ -147,7 +152,7 @@ public class ItemBean implements Serializable {
 		for (ItemDto item : itemList) {
 			itemBids = getBidListForItem(item);
 
-			bidsMap.put(item, itemBids);
+			bidsMap.put(item.getId(), itemBids);
 		}
 
 	}
@@ -203,9 +208,15 @@ public class ItemBean implements Serializable {
 		try {
 			itemList = service.getAllItemsForUser(login.getUser());
 		} catch (ItemException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
-
+		
+		try {
+			allItems = service.getAllItems();
+		} catch (ItemException e) {
+			System.out.println(e.getMessage());
+		}
+		
 	}
 
 	public void onRowEdit(RowEditEvent event) {
@@ -227,6 +238,30 @@ public class ItemBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
+	public void onCellEdit(CellEditEvent event) {
+
+		FacesMessage msg;
+		Object oldItem = (Object) event.getOldValue();
+		Object newItem = (Object) event.getNewValue();
+
+		try {
+			// service.updateItem(newItem);
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldItem + "\n New:" + newItem);
+		} catch (Exception e) {
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error when trying to edit", "Item:" + oldItem);
+		}
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public String onFlowProcess(FlowEvent event) {
+		if (skip) {
+			skip = false; // reset in case user goes back
+			return "confirm";
+		} else {
+			return event.getNewStep();
+		}
+	}
+
 	public UserLoginBean getLogin() {
 		return login;
 	}
@@ -235,12 +270,12 @@ public class ItemBean implements Serializable {
 		this.login = login;
 	}
 
-	public static List<ItemDto> getItemList() {
+	public List<ItemDto> getItemList() {
 		return itemList;
 	}
 
-	public static void setItemList(List<ItemDto> itemList) {
-		ItemBean.itemList = itemList;
+	public void setItemList(List<ItemDto> itemList) {
+		this.itemList = itemList;
 	}
 
 	public static List<CategoryDto> getCategoriesList() {
@@ -259,15 +294,15 @@ public class ItemBean implements Serializable {
 		this.treeBean = treeBean;
 	}
 
-	public static Map<ItemDto, List<BidDto>> getBidsMap() {
+	public Map<Long, List<BidDto>> getBidsMap() {
 		return bidsMap;
 	}
 
-	public static void setBidsMap(Map<ItemDto, List<BidDto>> bidsMap) {
-		ItemBean.bidsMap = bidsMap;
+	public void setBidsMap(Map<Long, List<BidDto>> bidsMap) {
+		this.bidsMap = bidsMap;
 	}
 
-	public static List<BidDto> getBidsList() {
+	public List<BidDto> getBidsList() {
 		return bidsList;
 	}
 
@@ -275,20 +310,20 @@ public class ItemBean implements Serializable {
 		ItemBean.bidsList = bidsList;
 	}
 
-	public static Map<ItemDto, Long> getMaxBids() {
+	public Map<Long, Long> getMaxBids() {
 		return maxBids;
 	}
 
-	public static void setMaxBids(Map<ItemDto, Long> maxBids) {
-		ItemBean.maxBids = maxBids;
+	public void setMaxBids(Map<Long, Long> maxBids) {
+		this.maxBids = maxBids;
 	}
 
-	public static Map<ItemDto, Integer> getNumberOfBids() {
+	public Map<Long, Integer> getNumberOfBids() {
 		return numberOfBids;
 	}
 
-	public static void setNumberOfBids(Map<ItemDto, Integer> numberOfBids) {
-		ItemBean.numberOfBids = numberOfBids;
+	public void setNumberOfBids(Map<Long, Integer> numberOfBids) {
+		this.numberOfBids = numberOfBids;
 	}
 
 	public static List<String> getStatusList() {
@@ -305,6 +340,22 @@ public class ItemBean implements Serializable {
 
 	public static void setItem(ItemDto item) {
 		ItemBean.item = item;
+	}
+
+	public boolean isSkip() {
+		return skip;
+	}
+
+	public void setSkip(boolean skip) {
+		this.skip = skip;
+	}
+
+	public List<ItemDto> getAllItems() {
+		return allItems;
+	}
+
+	public void setAllItems(List<ItemDto> allItems) {
+		this.allItems = allItems;
 	}
 
 }

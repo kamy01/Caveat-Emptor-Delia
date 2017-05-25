@@ -16,6 +16,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.menu.MenuModel;
 
 import model.CategoryDto;
 import services.category.CategoryService;
@@ -77,6 +78,11 @@ public class CategoriesPageBean {
 
 		treeBean.init();
 		expandNode(category);
+	}
+	
+	public void breadcrumbChange(MenuModel model) {
+		
+		System.out.println(model);
 	}
 
 	public void remove() {

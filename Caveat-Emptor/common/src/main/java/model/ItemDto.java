@@ -100,4 +100,67 @@ public class ItemDto implements Serializable {
 	public void setCategory(CategoryDto category) {
 		this.category = category;
 	}
+	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ItemDto other = (ItemDto) obj;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
+		if (closingDate == null) {
+			if (other.closingDate != null)
+				return false;
+		} else if (!closingDate.equals(other.closingDate))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (initialPrice == null) {
+			if (other.initialPrice != null)
+				return false;
+		} else if (!initialPrice.equals(other.initialPrice))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (openingDate == null) {
+			if (other.openingDate != null)
+				return false;
+		} else if (!openingDate.equals(other.openingDate))
+			return false;
+		if (owner == null) {
+			if (other.owner != null)
+				return false;
+		} else if (!owner.equals(other.owner))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		if (winner == null) {
+			if (other.winner != null)
+				return false;
+		} else if (!winner.equals(other.winner))
+			return false;
+		return true;
+	}
 }

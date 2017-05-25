@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Insert title here</title>
+</h:head>
+<h:body>
+	<h:panelGroup id="biddingPage">
+		<div id="biddingTreeDiv">
+			<p:tree value="#{treeBasicView.root}" var="node"
+				selectionMode="single" selection="#{treeBasicView.selectedNode}"
+				id="biddingCategory">
+				<p:ajax event="select" listener="#{biddingBean.onNodeSelect}"
+					update="content-form:tabView:categoryDescription content-form:tabView:items-content:bidding-items-table" />
+				<p:treeNode>
+					<h:outputText value="#{node.getName()}" />
+				</p:treeNode>
+			</p:tree>
+		</div>
+
+		<div id="itemsDiv">
+
+			<h:form id="items-content">
+				<div id="bidding-items-table-div">
+
+					<p:growl id="message" showDetail="true" />
+					<p:dataTable id="bidding-items-table" styleClass="order-table"
+						value="#{biddingBean.selectedItems}" var="it"
+						headerClass="order-table-header" editable="true"
+						rowClasses="order-table-odd-row,order-table-even-row"
+						paginator="true" rows="5"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10">
+
+						<p:column class="column-tab" headerText="Name" sortBy="#{it.name}">
+							<p:commandButton value="#{it.name}"
+								update="content-form:tabView:items-content:message content-form:tabView:viewItemForm"
+								onclick="PF('itemDlg').show();" style="background: white"
+								actionListener="#{biddingBean.choseItem(it)}" />
+						</p:column>
+
+						<p:column class="column-tab" headerText="Opening date"
+							sortBy="#{it.openingDate}">
+							<h:outputText value="#{it.openingDate}" />
+						</p:column>
+
+						<p:column class="column-tab" headerText="Closing date"
+							sortBy="#{it.closingDate}">
+							<h:outputText value="#{it.closingDate}" />
+						</p:column>
+
+						<p:column class="column-tab" headerText="Status"
+							sortBy="#{it.status}">
+							<h:outputText value="#{it.status}" />
+						</p:column>
+
+					</p:dataTable>
+				</div>
+			</h:form>
+		</div>
+
+		<div id="biddingCategoryDiv">
+			<h:panelGroup id="categoryDescription">
+				<h3 style="font-weight: normal;">#{biddingBean.getSelectedCategory().name}
+				</h3>
+				<br></br>
+				<h3 style="font-weight: normal;">#{biddingBean.getSelectedCategory().description}</h3>
+			</h:panelGroup>
+		</div>
+		
+		<p:dialog header="View Item" widgetVar="itemDlg" modal="true"
+			id="viewItemDlg" minHeight="20" showEffect="fade" hideEffect="fade">
+			<h:form id="viewItemForm">
+
+				<div id="viewItemDescription">
+
+					<h3>
+						<h:outputText value="#{biddingBean.selectedItem.name}" />
+					</h3>
+					<br></br> <img
+						src="http://3.grgs.ro/images/products/1/472405/1104923/normal/core-i7-6700k-40ghz-box-e9d15f45527b9ca2733f2afba6a6c370.jpg"
+						width="100" height="100" />
+
+
+					<h:outputText value="#{biddingBean.selectedItem.description}" />
+					<br></br>
+				</div>
+
+				<div id="viewItemInfo">
+					<h:panelGrid columns="2">
+
+						<h:outputText value="Best bid: " />
+						<h:outputText value="#{biddingBean.selectedMaxBid}" />
+
+						<h:outputText value="Initial price: " />
+						<h:outputText value="#{biddingBean.selectedItem.initialPrice}" />
+
+						<h:outputText value="Opening date: " />
+						<h:outputText value="#{biddingBean.selectedItem.openingDate}" />
+
+						<h:outputText value="Bid opened until: " />
+						<h:outputText value="#{biddingBean.selectedItem.closingDate}" />
+
+						<h:outputText value="Total bids: " />
+						<h:outputText value="#{biddingBean.selectedBidsNo}" />
+
+						<h:outputLabel for="userBid" value="Your bid: " />
+						<h:inputText value="#{biddingBean.currentBid.price}"
+							label="UserBid" id="userBid" />
+
+						<p:commandButton value="Submit" type="submit">
+							<p:ajax listener="#{biddingBean.addBid()}" process="@form"
+								update="content-form:tabView:viewItemDlg content-form:tabView:items-content:bidding-items-table
+								content-form:tabView:biddingCategory content-form:tabView:categoryDescription" />
+						</p:commandButton>
+					</h:panelGrid>
+				</div>
+
+
+			</h:form>
+		</p:dialog>
+
+	</h:panelGroup>
+</h:body>
+</h:html>

@@ -19,7 +19,8 @@ import javax.persistence.OneToOne;
 		@NamedQuery(name = "Item.findByCategoryId", query = "SELECT it FROM Item it, Category c WHERE c.id  = :id"),
 		@NamedQuery(name = "Item.getItemsForUser", query = "SELECT it from Item it where it.owner.id  = :id"),
 		@NamedQuery(name = "Item.findById", query = "SELECT it FROM User it WHERE it.id  = :id"), 
-		@NamedQuery(name = "Item.getAllItems", query = "SELECT it FROM Item it"),})
+		@NamedQuery(name = "Item.getAllItems", query = "SELECT it FROM Item it"),
+		@NamedQuery(name = "Item.getItemsForCategories", query = "SELECT it FROM Item it where it.category.id in (:idList)")})
 public class Item implements Serializable {
 
 	private static final long serialVersionUID = -8470034525611044083L;
@@ -28,6 +29,7 @@ public class Item implements Serializable {
 	public static final String FIND_ITEM_BY_CATEGORY_NAME = "Item.findByCategoryName";
 	public static final String GET_ITEMS_FOR_USER = "Item.getItemsForUser";
 	public static final String GET_ALL_ITEMS = "Item.getAllItems";
+	public static final String GET_ITEMS_FOR_CATEGORIES = "Item.getItemsForCategories";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

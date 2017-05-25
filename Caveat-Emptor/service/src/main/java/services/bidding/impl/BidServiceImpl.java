@@ -26,4 +26,11 @@ public class BidServiceImpl implements BidService {
 		return EntityDtoMapper.getBidsFromEntity(entities);
 	}
 
+	@Override
+	public void addBid(BidDto currentBid) throws BidException {
+
+		repository.addBid(EntityDtoMapper.getBidFromDto(currentBid));
+		
+	}
+
 }

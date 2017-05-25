@@ -6,7 +6,9 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
+import entities.Category;
 import entities.Item;
+import model.CategoryDto;
 import model.ItemDto;
 import model.UserDto;
 import repository.ItemRepository;
@@ -47,6 +49,13 @@ public class ItemServiceImpl implements ItemService{
 
 		Item entity = EntityDtoMapper.getItemFromDto(item);
 		repository.addItem(entity);
+		
+	}
+
+	@Override
+	public List<ItemDto> getItemsForCategories(List<Long> ids) throws ItemException {
+		
+		return EntityDtoMapper.getItemFromEntity(repository.getItemsForCategories(ids));
 		
 	}
 

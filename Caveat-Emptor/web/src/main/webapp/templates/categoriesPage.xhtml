@@ -9,7 +9,7 @@
 </h:head>
 <h:body>
 
-	<div>
+	<div id="categories-page-tree">
 		<ui:insert name="tree">
 			<ui:include src="../templates/tree.xhtml" />
 		</ui:insert>
@@ -33,19 +33,28 @@
 
 						</p:inputText> <p:commandButton value="Create new" id="create-new"
 							style="left:30%;position:relative;">
-							<p:ajax listener="#{categoriesPageBean.reset}" update="content-form:tabView:categories-page-panel" />
+							<p:ajax listener="#{categoriesPageBean.reset}"
+								update="content-form:tabView:categories-page-panel" />
 						</p:commandButton>
 					</span> <br></br>
 				</div>
 
 				<div id="breadcrump-div">
-					<p:breadCrumb id="breadcrumb-model" model="#{breadCrumb.model}">
+					<p:breadCrumb id="breadcrumb-model" model="#{breadCrumb.model}"
+						role="menu">
+						<ul>
+							<li role="menuitem" id="menu-item"><p:commandButton
+									id="ajax" 
+									onclick="#{categoriesPageBean.breadcrumbChange(menu-item)}"
+									styleClass="ui-priority-primary" /></li>
+						</ul>
 					</p:breadCrumb>
 
 				</div>
 				<div id="categories-destails-div">
 					<h:form id="categories-form">
-						<p:panel id="categories-panel" style="margin-top:10; margin-left:5px;">
+						<p:panel id="categories-panel"
+							style="margin-top:10; margin-left:5px;">
 							<h:panelGrid id="categories-details-grid" columns="2"
 								cellpadding="5">
 								<h:outputLabel for="name" value="Name" />
@@ -66,13 +75,13 @@
 							style="left:10%;position:relative;width:10% !important;"
 							value="Save">
 							<p:ajax listener="#{categoriesPageBean.save}" process="@form"
-								update=":content-form:tabView:tree :content-form:tabView:category-form" ></p:ajax>
+								update=":content-form:tabView:tree :content-form:tabView:category-form"></p:ajax>
 						</p:commandButton>
 						<p:commandButton id="removeCategoryButton"
 							style="left:35%;position:relative;width:10% !important;"
 							value="Remove" class="space">
 							<p:ajax listener="#{categoriesPageBean.remove}" process="@form"
-								update=":content-form:tabView:tree :content-form:tabView:category-form"  />
+								update=":content-form:tabView:tree :content-form:tabView:category-form" />
 						</p:commandButton>
 					</h:form>
 				</div>

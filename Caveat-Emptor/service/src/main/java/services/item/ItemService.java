@@ -12,5 +12,6 @@ public interface ItemService {
 	public List<ItemDto> getAllItemsForUser(UserDto owner) throws ItemException;
 	public void updateItem(ItemDto item) throws ItemException;
 	public void addNewItem(ItemDto item) throws ItemException;
+	public List<ItemDto> getItemsForCategories(List<Long> ids) throws ItemException;
 	
 }

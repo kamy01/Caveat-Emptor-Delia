@@ -12,5 +12,6 @@ public interface ItemRepository {
 	public List<Item> getAllItemsForUser(User owner) throws ItemException;
 	public void updateItem(Item item) throws ItemException;
 	public void addItem(Item item) throws ItemException;
+	public List<Item> getItemsForCategories(List<Long> parentList) throws ItemException;
 	
 }

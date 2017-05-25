@@ -132,6 +132,18 @@ public class CategoriesTreeBean implements Serializable {
 
 	}
 
+	public List<CategoryDto> getChildrenForCategory(TreeNode parent) {
+
+		List<TreeNode> childrenNodes = getAllChildren(parent);
+		List<CategoryDto> childrenCategories = new ArrayList<>();
+		
+		for(TreeNode node: childrenNodes)
+		{
+			childrenCategories.add((CategoryDto) node.getData());
+		}
+		
+		return childrenCategories;
+	}
 	
 	public List<CategoryDto> getCategories() {
 		

@@ -20,6 +20,7 @@ import utils.exceptions.ItemException;
 public class ItemRepositoryImpl implements ItemRepository {
 
 	private final static String GET_ALL_ITEMS_ERROR = " inside getAllItems() ";
+	private final static String GET_ITEMS_ERROR = " inside getItems() for categories: ";
 	private final static String UPDATE_ITEM_ERROR = " inside updateItem() for parameter: ";
 	private final static String CREATE_ITEM_ERROR = " inside addItem() for parameter: ";
 	
@@ -87,6 +88,24 @@ public class ItemRepositoryImpl implements ItemRepository {
 			throw new ItemException(e.getMessage() + CREATE_ITEM_ERROR + item.toString());
 		} catch (Exception e) {
 			throw new ItemException(e.getMessage() + CREATE_ITEM_ERROR + item.toString());
+		}
+		
+	}
+
+	@Override
+	public List<Item> getItemsForCategories(List<Long> parentList) throws ItemException {
+
+		List<Item> itemList = new ArrayList<Item>();
+		try {
+			Query query = em.createNamedQuery(Item.GET_ITEMS_FOR_CATEGORIES);
+			query.setParameter("idList", parentList);
+			itemList =  (List<Item>) query.getResultList();
+			return itemList;
+
+		} catch (IllegalArgumentException e) {
+			throw new ItemException(e.getMessage() + GET_ITEMS_ERROR + parentList);
+		} catch (Exception e) {
+			throw new ItemException(e.getMessage() + GET_ITEMS_ERROR + parentList);
 		}
 		
 	}

@@ -67,9 +67,7 @@ public class EntityDtoMapper {
 		Category category = new Category();
 		try {
 			category.setId(categoryDto.getId());
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		} catch (Exception e) {}
 		category.setName(categoryDto.getName());
 		category.setDescription(categoryDto.getDescription());
 		category.setParentId(categoryDto.getParentId());
@@ -83,9 +81,7 @@ public class EntityDtoMapper {
 
 		try {
 			user.setId(entity.getId());
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		} catch (Exception e) {}
 
 		user.setFirstName(entity.getFirstName());
 		user.setLastName(entity.getLastName());
@@ -144,6 +140,16 @@ public class EntityDtoMapper {
 
 		return categories;
 	}
+	
+	public static List<Category> getCategoriesFromDtos(List<CategoryDto> categories) {
+
+		List<Category> entities = new ArrayList<Category>();
+		for (CategoryDto category : categories) {
+			entities.add(getCategoryFromDto(category));
+		}
+
+		return entities;
+	}
 
 	public static List<ItemDto> getItemFromEntity(List<Item> entities) {
 
@@ -184,8 +190,7 @@ public class EntityDtoMapper {
 
 		try {
 			entity.setId(item.getId());
-		} catch (NullPointerException e) {
-		}
+		} catch (NullPointerException e) {}
 		entity.setCategory(EntityDtoMapper.getCategoryFromDto(item.getCategory()));
 		entity.setOwner(EntityDtoMapper.getUserFromDto(item.getOwner()));
 		entity.setName(item.getName());
@@ -221,15 +226,12 @@ public class EntityDtoMapper {
 
 	}
 
-	@SuppressWarnings("unused")
-	private static Bid getBidFromDto(BidDto bid) {
+	public static Bid getBidFromDto(BidDto bid) {
 
 		Bid entity = new Bid();
 		try {
 			bid.setId(entity.getId());
-		} catch (Exception e) {
-		}
-		;
+		} catch (Exception e) {}
 
 		entity.setItem(getItemFromDto(bid.getItem()));
 		entity.setPrice(bid.getPrice());
@@ -244,9 +246,7 @@ public class EntityDtoMapper {
 		BidDto bid = new BidDto();
 		try {
 			bid.setId(entity.getId());
-		} catch (Exception e) {
-		}
-		;
+		} catch (Exception e) {}
 
 		bid.setItem(getItemFromEntity(entity.getItem()));
 		bid.setPrice(entity.getPrice());

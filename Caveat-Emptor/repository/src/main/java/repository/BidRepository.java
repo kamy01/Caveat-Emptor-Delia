@@ -10,5 +10,6 @@ public interface BidRepository {
 
 	public List<Bid> getAllBids() throws BidException;
 	public List<Bid> getBidsForItem(Item item);
+	public void addBid(Bid bid) throws BidException;
 
 }
