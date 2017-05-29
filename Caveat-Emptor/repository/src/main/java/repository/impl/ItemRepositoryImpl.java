@@ -44,6 +44,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Item> getAllItemsForUser(User owner) throws ItemException {
 		
@@ -92,6 +93,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Item> getItemsForCategories(List<Long> parentList) throws ItemException {
 

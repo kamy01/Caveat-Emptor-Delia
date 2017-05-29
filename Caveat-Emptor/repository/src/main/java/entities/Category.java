@@ -110,4 +110,10 @@ public class Category implements Serializable {
 		this.description = description;
 	}
 
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", parentId=" + parentId + ", name=" + name + ", description=" + description
+				+ "]";
+	}
+
 }

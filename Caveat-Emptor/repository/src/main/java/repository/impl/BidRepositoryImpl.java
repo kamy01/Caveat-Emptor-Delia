@@ -13,16 +13,19 @@ import javax.persistence.TransactionRequiredException;
 
 import entities.Bid;
 import entities.Item;
+import entities.User;
 import repository.BidRepository;
 import utils.exceptions.BidException;
-import utils.exceptions.UserException;
 
 @Stateless
 @Remote(BidRepository.class)
 public class BidRepositoryImpl implements BidRepository {
 
 	private final static String GET_ALL_BIDS_ERROR = " inside getAllIBids() ";
+	private final static String GET_BID_FOR_USER_ERROR = " inside getBidForUser() ";
 	private final static String INSERT_BID_ERROR = " inside addBid() for parameter: ";
+	private final static String UPDATE_BID_ERROR = " inside editBid() for parameter: ";
+	private final static String REMOVE_BID_ERROR = " inside editBid() for parameter: ";
 
 	@PersistenceContext(unitName = "myapp")
 	EntityManager em;
@@ -64,7 +67,59 @@ public class BidRepositoryImpl implements BidRepository {
 		} catch (Exception e) {
 			throw new BidException(e.getMessage() + INSERT_BID_ERROR + bid.toString());
 		}
-		
+
+	}
+
+	@Override
+	public Bid getBidForUser(Item item, User user) throws BidException {
+
+		Bid bid = new Bid();
+
+		try {
+			Query query = em.createNamedQuery(Bid.GET_BID_FOR_USER);
+			query.setParameter("userId", user.getId());
+			query.setParameter("itemId", item.getId());
+			bid = (Bid) query.getSingleResult();
+			return bid;
+
+		} catch (IllegalArgumentException e) {
+			throw new BidException(e.getMessage() + GET_BID_FOR_USER_ERROR + "for user: " + user.toString()
+					+ ", and item: " + item.toString());
+		} catch (Exception e) {
+			throw new BidException(e.getMessage() + GET_BID_FOR_USER_ERROR + "for user: " + user.toString()
+					+ ", and item: " + item.toString());
+		}
+
+	}
+
+	@Override
+	public void editBid(Bid bid) throws BidException {
+
+		try {
+			em.merge(bid);
+		} catch (IllegalArgumentException e) {
+			throw new BidException(e.getMessage() + UPDATE_BID_ERROR + bid.toString());
+		} catch (TransactionRequiredException e) {
+			throw new BidException(e.getMessage() + UPDATE_BID_ERROR + bid.toString());
+		} catch (Exception e) {
+			throw new BidException(e.getMessage() + UPDATE_BID_ERROR + bid.toString());
+		}
+
+	}
+
+	@Override
+	public void removeBid(Bid bid) throws BidException {
+
+		try {
+			em.remove(em.contains(bid) ? bid : em.merge(bid));
+
+		} catch (IllegalArgumentException e) {
+			throw new BidException(e.getMessage() + REMOVE_BID_ERROR + bid.toString());
+		} catch (TransactionRequiredException e) {
+			throw new BidException(e.getMessage() + REMOVE_BID_ERROR + bid.toString());
+		} catch (Exception e) {
+			throw new BidException(e.getMessage() + REMOVE_BID_ERROR + bid.toString());
+		}
 	}
 
 }

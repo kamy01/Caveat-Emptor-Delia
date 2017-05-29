@@ -29,7 +29,7 @@ import utils.exceptions.ItemException;
 public class BiddingBean implements Serializable {
 
 	private static final long serialVersionUID = 4382587578494080638L;
-	
+
 	@EJB
 	BidService service;
 
@@ -41,7 +41,7 @@ public class BiddingBean implements Serializable {
 
 	@ManagedProperty(value = "#{treeBasicView}")
 	private CategoriesTreeBean treeBean;
-	
+
 	@ManagedProperty(value = "#{itemBean}")
 	private ItemBean itemBean;
 
@@ -49,22 +49,23 @@ public class BiddingBean implements Serializable {
 	private List<ItemDto> selectedItems;
 	private BidDto currentBid;
 	private ItemDto selectedItem;
-	
+	private boolean newBid;
+
 	private Long selectedMaxBid;
 	private int selectedBidsNo;
 
 	@PostConstruct
 	private void init() {
-		
+
 		selectedCategory = new CategoryDto();
 		selectedItems = new ArrayList<ItemDto>();
-		
+
 		selectedItem = new ItemDto();
 		selectedItem.setOpeningDate(new Date());
 		selectedItem.setClosingDate(new Date());
-		
+
 		currentBid = new BidDto();
-		
+
 		treeBean.init();
 	}
 
@@ -73,7 +74,15 @@ public class BiddingBean implements Serializable {
 		selectedItem = item;
 		selectedBidsNo = itemBean.getNumberOfBids().get(item.getId());
 		selectedMaxBid = itemBean.getMaxBids().get(item.getId());
-		
+
+		try {
+			currentBid = service.getBidForUser(item, login.getUser());
+			newBid = false;
+		} catch (BidException e) {
+			currentBid = new BidDto();
+			newBid = true;
+		}
+
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Selected", item.getName()));
 
 	}
@@ -96,20 +105,34 @@ public class BiddingBean implements Serializable {
 		}
 
 	}
-	
+
 	public void addBid() {
-		
+
 		currentBid.setUser(login.getUser());
 		currentBid.setItem(selectedItem);
 		try {
-			service.addBid(currentBid);
+			if (newBid) {
+				service.addBid(currentBid);
+			} else {
+				service.editBid(currentBid);
+			}
 		} catch (BidException e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		itemBean.init();
 		init();
-		
+	}
+
+	public void removeBid() {
+		try {
+			service.removeBid(currentBid);
+		} catch (BidException e) {
+			System.out.println(e.getMessage());
+		}
+
+		itemBean.init();
+		init();
 	}
 
 	private List<Long> getIdList(List<CategoryDto> childrenList) {
@@ -214,6 +237,14 @@ public class BiddingBean implements Serializable {
 
 	public void setCurrentBid(BidDto currentBid) {
 		this.currentBid = currentBid;
+	}
+
+	public boolean isNewBid() {
+		return newBid;
+	}
+
+	public void setNewBid(boolean newBid) {
+		this.newBid = newBid;
 	}
 
 }

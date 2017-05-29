@@ -14,15 +14,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
 @Entity
-@NamedQueries({ @NamedQuery(name = "Bid.getAllBids", query = "SELECT b FROM Bid b")})
+@NamedQueries({ @NamedQuery(name = "Bid.getAllBids", query = "SELECT b FROM Bid b"),
+		 @NamedQuery(name = "Bid.getBidForUser", query = "SELECT b FROM Bid b where b.item.id=:itemId and b.user.id = :userId")})
 public class Bid implements Serializable {
 
 	private static final long serialVersionUID = 4139602802551466322L;
-	public static final String FIND_ITEM_BY_NAME = "Item.findByName";
-	public static final String FIND_ITEM_BY_CATEGORY_ID = "Item.findByCategoryId";
-	public static final String FIND_ITEM_BY_CATEGORY_NAME = "Item.findByCategoryName";
-	public static final String FIND_ITEM_BY_USER_ID = "Item.findByUserId";
 	public static final String GET_ALL_BIDS = "Bid.getAllBids";
+	public static final String GET_BID_FOR_USER = "Bid.getBidForUser";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

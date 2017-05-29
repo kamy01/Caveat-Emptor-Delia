@@ -38,7 +38,7 @@
 						<p:column class="column-tab" headerText="Name" sortBy="#{it.name}">
 							<p:commandButton value="#{it.name}"
 								update="content-form:tabView:items-content:message content-form:tabView:viewItemForm"
-								onclick="PF('itemDlg').show();" style="background: white"
+								oncomplete="PF('itemDlg').show();" style="background: white"
 								actionListener="#{biddingBean.choseItem(it)}" />
 						</p:column>
 
@@ -70,7 +70,7 @@
 				<h3 style="font-weight: normal;">#{biddingBean.getSelectedCategory().description}</h3>
 			</h:panelGroup>
 		</div>
-		
+
 		<p:dialog header="View Item" widgetVar="itemDlg" modal="true"
 			id="viewItemDlg" minHeight="20" showEffect="fade" hideEffect="fade">
 			<h:form id="viewItemForm">
@@ -80,39 +80,65 @@
 					<h3>
 						<h:outputText value="#{biddingBean.selectedItem.name}" />
 					</h3>
-					<br></br> <img
-						src="http://3.grgs.ro/images/products/1/472405/1104923/normal/core-i7-6700k-40ghz-box-e9d15f45527b9ca2733f2afba6a6c370.jpg"
-						width="100" height="100" />
-
-
-					<h:outputText value="#{biddingBean.selectedItem.description}" />
 					<br></br>
+					<h:panelGrid columns="3">
+						<br></br>
+						<img
+							src="http://3.grgs.ro/images/products/1/472405/1104923/normal/core-i7-6700k-40ghz-box-e9d15f45527b9ca2733f2afba6a6c370.jpg"
+							width="100" height="100" />
+						<br></br>
+						<h:outputText value="#{biddingBean.selectedItem.description}" />
+						<br></br>
+					</h:panelGrid>
 				</div>
 
 				<div id="viewItemInfo">
-					<h:panelGrid columns="2">
+					<h:panelGrid columns="3">
 
 						<h:outputText value="Best bid: " />
 						<h:outputText value="#{biddingBean.selectedMaxBid}" />
+						<br></br>
 
 						<h:outputText value="Initial price: " />
 						<h:outputText value="#{biddingBean.selectedItem.initialPrice}" />
+						<br></br>
 
 						<h:outputText value="Opening date: " />
 						<h:outputText value="#{biddingBean.selectedItem.openingDate}" />
+						<br></br>
 
 						<h:outputText value="Bid opened until: " />
 						<h:outputText value="#{biddingBean.selectedItem.closingDate}" />
+						<br></br>
 
 						<h:outputText value="Total bids: " />
 						<h:outputText value="#{biddingBean.selectedBidsNo}" />
+						<br></br>
 
-						<h:outputLabel for="userBid" value="Your bid: " />
-						<h:inputText value="#{biddingBean.currentBid.price}"
-							label="UserBid" id="userBid" />
+						<h:outputLabel rendered="#{biddingBean.newBid}" for="userBid"
+							value="Your bid: " />
+						<h:inputText rendered="#{biddingBean.newBid}"
+							value="#{biddingBean.currentBid.price}" label="UserBid"
+							id="userBid" />
+
+						<h:outputLabel rendered="#{!biddingBean.newBid}" for="priceEditor"
+							value="Your bid: " />
+						<p:inplace id="priceEditor" editor="true">
+							<h:inputText rendered="#{!biddingBean.newBid}" required="true"
+								value="#{biddingBean.currentBid.price}" label="UserBid2"
+								id="userBid2" />
+						</p:inplace>
+						<br></br>
 
 						<p:commandButton value="Submit" type="submit">
 							<p:ajax listener="#{biddingBean.addBid()}" process="@form"
+								update="content-form:tabView:viewItemDlg content-form:tabView:items-content:bidding-items-table
+								content-form:tabView:biddingCategory content-form:tabView:categoryDescription" />
+						</p:commandButton>
+						<p:commandButton value="Cancel" type="submit"
+							update="content-form:tabView:viewItemDlg" />
+						<p:commandButton value="Remove bid" type="submit">
+							<p:ajax listener="#{biddingBean.removeBid()}" process="@form"
 								update="content-form:tabView:viewItemDlg content-form:tabView:items-content:bidding-items-table
 								content-form:tabView:biddingCategory content-form:tabView:categoryDescription" />
 						</p:commandButton>

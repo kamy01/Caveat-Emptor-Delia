@@ -18,9 +18,9 @@ import javax.persistence.OneToOne;
 @NamedQueries({ @NamedQuery(name = "Item.findByName", query = "SELECT it FROM Item it WHERE it.name  = :name"),
 		@NamedQuery(name = "Item.findByCategoryId", query = "SELECT it FROM Item it, Category c WHERE c.id  = :id"),
 		@NamedQuery(name = "Item.getItemsForUser", query = "SELECT it from Item it where it.owner.id  = :id"),
-		@NamedQuery(name = "Item.findById", query = "SELECT it FROM User it WHERE it.id  = :id"), 
+		@NamedQuery(name = "Item.findById", query = "SELECT it FROM User it WHERE it.id  = :id"),
 		@NamedQuery(name = "Item.getAllItems", query = "SELECT it FROM Item it"),
-		@NamedQuery(name = "Item.getItemsForCategories", query = "SELECT it FROM Item it where it.category.id in (:idList)")})
+		@NamedQuery(name = "Item.getItemsForCategories", query = "SELECT it FROM Item it where it.category.id in (:idList)") })
 public class Item implements Serializable {
 
 	private static final long serialVersionUID = -8470034525611044083L;
@@ -35,11 +35,11 @@ public class Item implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(cascade = {CascadeType.REFRESH})
+	@OneToOne(cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "owner_id_fk")
 	private User owner;
 
-	@OneToOne(cascade = {CascadeType.REFRESH})
+	@OneToOne(cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "category_id_fk")
 	private Category category;
 
@@ -61,7 +61,7 @@ public class Item implements Serializable {
 	@Column(length = 10)
 	private String status;
 
-	@OneToOne(cascade = {CascadeType.REFRESH})
+	@OneToOne(cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "winner_id_fk")
 	private User winner;
 
@@ -147,11 +147,12 @@ public class Item implements Serializable {
 	public void setWinner(User winner) {
 		this.winner = winner;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", owner=" + owner + ", category=" + category + ", name=" + name + ", description="
-				+ description + ", initialPrice=" + initialPrice + ", openingDate=" + openingDate + ", closingDate="
-				+ closingDate + ", status=" + status + ", winner=" + winner.toString() + "]";
+		return "Item [id=" + id + ", owner=" + owner + ", category=" + category.toString() + ", name=" + name
+				+ ", description=" + description + ", initialPrice=" + initialPrice + ", openingDate=" + openingDate
+				+ ", closingDate=" + closingDate + ", status=" + status + ", winner="
+				+ (winner != null ? winner.toString() : "N/A") + "]";
 	}
 }

@@ -6,9 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
-import entities.Category;
 import entities.Item;
-import model.CategoryDto;
 import model.ItemDto;
 import model.UserDto;
 import repository.ItemRepository;

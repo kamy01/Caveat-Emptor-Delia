@@ -241,7 +241,7 @@ public class EntityDtoMapper {
 		return entity;
 	}
 
-	private static BidDto getBidFromEntity(Bid entity) {
+	public static BidDto getBidFromEntity(Bid entity) {
 
 		BidDto bid = new BidDto();
 		try {
